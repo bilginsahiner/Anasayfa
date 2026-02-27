@@ -10,8 +10,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            /* Müzik çaların içeriği kapatmaması için alt boşluğu artırdım */
-            padding-bottom: 220px;
+            padding-bottom: 100px;
         }
 
         .dashboard-container {
@@ -70,14 +69,10 @@
             transform: translateY(-2px);
         }
 
-        .schedule-btn svg {
-            color: #a29bfe;
-        }
+        .schedule-btn svg { color: #a29bfe; }
 
         .info-bubble {
             margin-top: 30px;
-            /* Müzik çalarla arasına ek mesafe */
-            margin-bottom: 40px;
             background: rgba(255, 255, 255, 0.05);
             border-left: 4px solid #6246ea;
             padding: 15px;
@@ -93,23 +88,60 @@
             margin-bottom: 5px;
         }
 
+        /* --- Müzik Çalar Tasarımı --- */
+        
+        /* Tetikleyici Küçük İkon */
+        .music-trigger {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: #6246ea;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
+            z-index: 10000;
+            transition: transform 0.3s ease;
+        }
+
+        .music-trigger:hover { transform: scale(1.1); }
+
+        /* Müzik Paneli */
         .music-player {
             position: fixed;
-            bottom: 0;
+            bottom: -300px; /* Başlangıçta gizli */
             left: 0;
             width: 100%;
-            background: linear-gradient(rgba(30, 30, 38, 0.8), rgba(30, 30, 38, 0.8)), 
+            background: linear-gradient(rgba(30, 30, 38, 0.95), rgba(30, 30, 38, 0.95)), 
                         url('https://www.hanneh.com.tr/idea/op/19/myassets/products/118/img-2792.jpeg?revision=1759660660');
             background-size: cover;
             background-position: center; 
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-top: 2px solid #6246ea;
-            padding: 15px 0 25px 0;
+            padding: 10px 0 25px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 9999;
+            transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .music-player.active { bottom: 0; }
+
+        .close-player {
+            width: 40px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
         }
 
         .track-name {
@@ -203,7 +235,16 @@
     </header>
 </div>
 
-<div class="music-player">
+<div class="music-trigger" onclick="togglePlayerPanel()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+</div>
+
+<div class="music-player" id="playerPanel">
+    <div class="close-player" onclick="togglePlayerPanel()"></div>
     <div class="track-name">ن</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
@@ -231,6 +272,11 @@
             height: '0', width: '0', videoId: 'ElqvHjrR4IQ', 
             playerVars: { 'start': 12, 'controls': 0 }
         }); 
+    }
+
+    // Paneli Aç/Kapat Fonksiyonu
+    function togglePlayerPanel() {
+        document.getElementById('playerPanel').classList.toggle('active');
     }
 
     function updateProgressBar() { 
