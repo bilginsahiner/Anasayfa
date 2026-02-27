@@ -10,7 +10,8 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 100px;
+            padding-bottom: 100px; /* Varsayılan boşluk */
+            transition: padding-bottom 0.5s ease; /* Yumuşak kayma efekti */
         }
 
         .dashboard-container {
@@ -94,8 +95,8 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            width: 40px; /* Küçültüldü */
-            height: 40px; /* Küçültüldü */
+            width: 40px;
+            height: 40px;
             background: #6246ea;
             border-radius: 50%;
             display: flex;
@@ -108,7 +109,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Panel açıldığında butonu gizle */
         .music-trigger.hidden {
             opacity: 0;
             pointer-events: none;
@@ -280,14 +280,16 @@
     function togglePlayerPanel() {
         var panel = document.getElementById('playerPanel');
         var trigger = document.getElementById('musicTrigger');
+        var body = document.body;
         
         panel.classList.toggle('active');
         
-        // Panel aktifse butonu gizle, değilse göster
         if(panel.classList.contains('active')) {
             trigger.classList.add('hidden');
+            body.style.paddingBottom = "250px"; // Panel açıldığında notları yukarı iten boşluk
         } else {
             trigger.classList.remove('hidden');
+            body.style.paddingBottom = "100px"; // Panel kapandığında eski haline döner
         }
     }
 
