@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ders Programı ve Müzik Çalar</title>
+    <title>Ders Programı - Müzik Çalar</title>
     <style>
         body {
             margin: 0;
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 100px; /* Müzik çalar için boşluk */
+            padding-bottom: 120px;
         }
 
         .dashboard-container {
@@ -19,82 +19,56 @@
             margin: auto;
         }
 
-        /* Başlık ve Kart Tasarımları */
-        .welcome-section h1 { font-size: 1.8rem; color: #ffffff; }
-        .welcome-section p { color: #a0a0a0; }
+        .welcome-section h1 { font-size: 1.8rem; color: #ffffff; margin-bottom: 5px; }
+        .welcome-section p { color: #a0a0a0; margin-top: 0; }
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .stat-card {
-            background: #1e1e26;
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid #2d2d3a;
-        }
-
-        .exam-highlight {
-            background: linear-gradient(145deg, #6246ea, #4834d4);
-            border: none;
-        }
-
-        /* Müzik Çalar - En Alt Kısım */
+        /* Müzik Çalar Tasarımı */
         .music-player {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(30, 30, 38, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid #2d2d3a;
-            padding: 15px 0;
+            background: #1e1e26;
+            border-top: 2px solid #6246ea;
+            padding: 20px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 1000;
-        }
-
-        .track-info {
-            font-size: 0.85rem;
-            color: #ffffff;
-            margin-bottom: 10px;
-            font-weight: 500;
+            z-index: 9999;
         }
 
         .controls {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 30px;
         }
 
         .control-btn {
             background: none;
             border: none;
-            color: #ffffff;
+            color: white;
             cursor: pointer;
-            transition: 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
         }
-
-        .control-btn:hover { color: #6246ea; transform: scale(1.1); }
 
         .play-btn {
             background: #6246ea;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.4);
         }
 
-        .play-btn:hover { background: #4834d4; color: white; }
+        .track-name {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #6246ea;
+            font-weight: bold;
+        }
 
-        /* Video Gizleme */
-        #yt-player { display: none; }
+        #yt-player { display: none; } /* Videoyu gizle */
     </style>
 </head>
 <body>
@@ -104,26 +78,21 @@
         <h1>Hoş Geldin! 🌙</h1>
         <p>Günün özetine göz atabilirsin.</p>
     </header>
-
-    <div class="stat-grid">
-        <div class="stat-card"><h3>Ders Programı</h3><p>4 Ders</p></div>
-        <div class="stat-card exam-highlight"><h3>Sınav Takvimi</h3><p>2 Yaklaşan</p></div>
     </div>
-</div>
 
 <div class="music-player">
-    <div class="track-info">Ramy - Slide (Slowed & Reverb)</div>
+    <div class="track-name">Ramy - Slide (Playing from 12s)</div>
     <div class="controls">
-        <button class="control-btn" onclick="prevTrack()">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        <button class="control-btn" onclick="seekBack()">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
 
-        <button class="control-btn play-btn" id="master-play" onclick="togglePlay()">
-            <svg id="play-icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <button class="control-btn play-btn" onclick="togglePlay()">
+            <svg id="play-icon" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
 
-        <button class="control-btn" onclick="nextTrack()">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        <button class="control-btn" onclick="seekForward()">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
     </div>
 </div>
@@ -133,8 +102,9 @@
 <script>
     var player;
     var isPlaying = false;
+    var hasStarted = false;
 
-    // YouTube API'yi yükle
+    // YouTube API Yükleme
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -144,17 +114,28 @@
         player = new YT.Player('yt-player', {
             height: '0',
             width: '0',
-            videoId: 'ElqvHjrR4IQ', // YouTube Video ID
+            videoId: 'ElqvHjrR4IQ',
             playerVars: {
-                'start': 12, // 12. saniyeden başlat
-                'controls': 0,
-                'disablekb': 1
+                'start': 12,
+                'controls': 0
+            },
+            events: {
+                'onReady': onPlayerReady
             }
         });
     }
 
+    function onPlayerReady(event) {
+        console.log("Müzik çalar hazır.");
+    }
+
     function togglePlay() {
         if (!isPlaying) {
+            // İlk kez basıldığında 12. saniyeye git ve oynat
+            if (!hasStarted) {
+                player.seekTo(12);
+                hasStarted = true;
+            }
             player.playVideo();
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
             isPlaying = true;
@@ -165,8 +146,8 @@
         }
     }
 
-    function prevTrack() { player.seekTo(12); } // Örnektir: Başa (12. sn) sarar
-    function nextTrack() { console.log("Sıradaki parça..."); }
+    function seekBack() { player.seekTo(player.getCurrentTime() - 10); }
+    function seekForward() { player.seekTo(player.getCurrentTime() + 10); }
 </script>
 
 </body>
