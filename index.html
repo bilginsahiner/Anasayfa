@@ -19,8 +19,58 @@
             margin: auto;
         }
 
-        .welcome-section h1 { font-size: 1.8rem; color: #ffffff; margin-bottom: 5px; }
+        .welcome-section h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .moon-icon {
+            width: 24px;
+            height: 24px;
+            color: #6246ea;
+            transform: scaleX(-1) rotate(10deg);
+            filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.4));
+        }
+
         .welcome-section p { color: #a0a0a0; margin-top: 0; }
+
+        /* YENİ MODERN BUTON TASARIMI */
+        .btn-container { 
+            margin-top: 25px; 
+        }
+
+        .schedule-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            /* Cam Efekti: Hafif şeffaf mor */
+            background: rgba(98, 70, 234, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 50px; /* Yuvarlak köşeler */
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid rgba(98, 70, 234, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .schedule-btn:hover {
+            background: rgba(98, 70, 234, 0.2);
+            border-color: #6246ea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .schedule-btn svg {
+            color: #a29bfe;
+        }
 
         /* Müzik Çalar Tasarımı */
         .music-player {
@@ -28,7 +78,12 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #1e1e26;
+            background: linear-gradient(rgba(30, 30, 38, 0.8), rgba(30, 30, 38, 0.8)), 
+                        url('https://www.hanneh.com.tr/idea/op/19/myassets/products/118/img-2792.jpeg?revision=1759660660');
+            background-size: cover;
+            background-position: center; 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border-top: 2px solid #6246ea;
             padding: 15px 0 25px 0;
             display: flex;
@@ -40,27 +95,27 @@
         .track-name {
             font-size: 24px;
             margin-bottom: 5px;
-            color: #6246ea;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             font-weight: bold;
         }
 
-        /* İlerleme Çubuğu Alanı */
         .progress-container {
             width: 80%;
             max-width: 300px;
             height: 4px;
-            background: #2d2d3a;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
-            pointer-events: none; /* Tıklanabilirliği engeller */
+            pointer-events: none;
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
             background: #6246ea;
-            box-shadow: 0 0 8px rgba(98, 70, 234, 0.6);
+            box-shadow: 0 0 8px rgba(98, 70, 234, 0.8);
             transition: width 0.5s linear;
         }
 
@@ -85,7 +140,7 @@
             height: 50px;
             border-radius: 50%;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
         }
 
         #yt-player { display: none; }
@@ -95,27 +150,38 @@
 
 <div class="dashboard-container">
     <header class="welcome-section">
-        <h1>Hoş Geldin! 🌙</h1>
+        <h1>
+            Hoş Geldin!
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </h1>
         <p>Günün özetine göz atabilirsin.</p>
+        
+        <div class="btn-container">
+            <a href="https://bilginsahiner.github.io/Ders-Programi" class="schedule-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Ders Programı</span>
+            </a>
+        </div>
     </header>
 </div>
 
 <div class="music-player">
     <div class="track-name">ن</div>
-    
-    <div class="progress-container">
-        <div class="progress-bar" id="progress"></div>
-    </div>
-
+    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
         <button class="control-btn" onclick="seekBack()">
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
-
         <button class="control-btn play-btn" onclick="togglePlay()">
             <svg id="play-icon" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
-
         <button class="control-btn" onclick="seekForward()">
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
@@ -125,58 +191,13 @@
 <div id="yt-player"></div>
 
 <script>
-    var player;
-    var isPlaying = false;
-    var hasStarted = false;
-    var progressInterval;
-
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('yt-player', {
-            height: '0',
-            width: '0',
-            videoId: 'ElqvHjrR4IQ',
-            playerVars: {
-                'start': 12,
-                'controls': 0
-            }
-        });
-    }
-
-    function updateProgressBar() {
-        if (player && player.getDuration) {
-            var currentTime = player.getCurrentTime();
-            var duration = player.getDuration();
-            var percentage = (currentTime / duration) * 100;
-            document.getElementById('progress').style.width = percentage + "%";
-        }
-    }
-
-    function togglePlay() {
-        if (!isPlaying) {
-            if (!hasStarted) {
-                player.seekTo(12);
-                hasStarted = true;
-            }
-            player.playVideo();
-            document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-            isPlaying = true;
-            // İlerlemeyi her saniye güncelle
-            progressInterval = setInterval(updateProgressBar, 1000);
-        } else {
-            player.pauseVideo();
-            document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-            isPlaying = false;
-            clearInterval(progressInterval);
-        }
-    }
-
-    function seekBack() { player.seekTo(player.getCurrentTime() - 10); }
-    function seekForward() { player.seekTo(player.getCurrentTime() + 10); }
+    var player; var isPlaying = false; var hasStarted = false; var progressInterval;
+    var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    function onYouTubeIframeAPIReady() { player = new YT.Player('yt-player', { height: '0', width: '0', videoId: 'ElqvHjrR4IQ', playerVars: { 'start': 12, 'controls': 0 } }); }
+    function updateProgressBar() { if (player && player.getDuration) { var currentTime = player.getCurrentTime(); var duration = player.getDuration(); var percentage = (currentTime / duration) * 100; document.getElementById('progress').style.width = percentage + "%"; } }
+    function togglePlay() { if (!isPlaying) { if (!hasStarted) { player.seekTo(12); hasStarted = true; } player.playVideo(); document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; isPlaying = true; progressInterval = setInterval(updateProgressBar, 1000); } else { player.pauseVideo(); document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; isPlaying = false; clearInterval(progressInterval); } }
+    function seekBack() { player.seekTo(player.getCurrentTime() - 10); } function seekForward() { player.seekTo(player.getCurrentTime() + 10); }
 </script>
 
 </body>
