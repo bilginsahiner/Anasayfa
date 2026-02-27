@@ -120,8 +120,9 @@
             bottom: -300px;
             left: 0;
             width: 100%;
-            background: linear-gradient(rgba(30, 30, 38, 0.95), rgba(30, 30, 38, 0.95)), 
-                        url('https://www.hanneh.com.tr/idea/op/19/myassets/products/118/img-2792.jpeg?revision=1759660660');
+            /* Arka plan senin GitHub'a yükleyeceğin resim olarak güncellendi */
+            background: linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), 
+                        url('nesrinim.jpg'); 
             background-size: cover;
             background-position: center; 
             backdrop-filter: blur(10px);
@@ -281,7 +282,7 @@
     window.onload = function() {
         const playerState = localStorage.getItem('musicPlayerActive');
         if (playerState === 'true') {
-            applyPanelState(true, false); // Sayfa yeni açıldığında animasyonsuz anında açılması için
+            applyPanelState(true, false); 
         }
     };
 
@@ -302,7 +303,6 @@
             body.style.paddingBottom = "280px"; 
             localStorage.setItem('musicPlayerActive', 'true');
             
-            // Not kısmını otomatik olarak yukarı kaydır
             if (shouldScroll) {
                 setTimeout(() => {
                     window.scrollTo({
