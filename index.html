@@ -98,6 +98,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .progress-bar {
@@ -177,7 +178,7 @@
     function onYouTubeIframeAPIReady() { 
         player = new YT.Player('yt-player', { 
             height: '0', width: '0', videoId: 'ElqvHjrR4IQ', 
-            playerVars: { 'start': 12, 'controls': 0, 'disablekb': 1 }
+            playerVars: { 'start': 12, 'controls': 0 }
         }); 
     }
 
@@ -196,14 +197,7 @@
             player.playVideo(); 
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
-            progressInterval = setInterval(updateProgressBar, 1000);
-            
-            // Bildirim kontrollerini bozmaya çalış
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({ title: ' ', artist: ' ', album: ' ' });
-                navigator.mediaSession.setActionHandler('seekbackward', null);
-                navigator.mediaSession.setActionHandler('seekforward', null);
-            }
+            progressInterval = setInterval(updateProgressBar, 1000); 
         } else { 
             player.pauseVideo(); 
             document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; 
