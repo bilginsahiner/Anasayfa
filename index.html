@@ -57,6 +57,16 @@
             -webkit-backdrop-filter: blur(8px);
         }
 
+        .schedule-btn:hover {
+            background: rgba(98, 70, 234, 0.2);
+            border-color: #6246ea;
+            transform: translateY(-2px);
+        }
+
+        .schedule-btn svg {
+            color: #a29bfe;
+        }
+
         .music-player {
             position: fixed;
             bottom: 0;
@@ -99,24 +109,23 @@
             width: 0%;
             height: 100%;
             background: #6246ea;
+            box-shadow: 0 0 8px rgba(98, 70, 234, 0.8);
             transition: width 0.5s linear;
         }
 
         .controls { display: flex; align-items: center; gap: 30px; }
-        .control-btn { background: none; border: none; color: white; cursor: pointer; }
+        .control-btn { background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; }
 
         .play-btn {
             background: #6246ea;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            display: flex;
             justify-content: center;
-            align-items: center;
             box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
         }
 
-        #yt-player { position: absolute; top: -9999px; left: -9999px; }
+        #yt-player { display: none; }
     </style>
 </head>
 <body>
@@ -130,8 +139,17 @@
             </svg>
         </h1>
         <p>Günün özetine göz atabilirsin.</p>
+        
         <div class="btn-container">
-            <a href="https://bilginsahiner.github.io/Ders-Programi" class="schedule-btn">Ders Programı</a>
+            <a href="https://bilginsahiner.github.io/Ders-Programi" class="schedule-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Ders Programı</span>
+            </a>
         </div>
     </header>
 </div>
@@ -140,77 +158,57 @@
     <div class="track-name">ن</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
-        <button class="control-btn" onclick="seekBack()">⏮</button>
-        <button class="control-btn play-btn" onclick="togglePlay()">
-            <span id="play-icon">▶</span>
+        <button class="control-btn" onclick="seekBack()">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
-        <button class="control-btn" onclick="seekForward()">⏭</button>
+        <button class="control-btn play-btn" onclick="togglePlay()">
+            <svg id="play-icon" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="control-btn" onclick="seekForward()">
+            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
     </div>
 </div>
 
 <div id="yt-player"></div>
 
 <script>
-    var player; var isPlaying = false; var progressInterval;
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('yt-player', {
-            height: '0',
-            width: '0',
-            videoId: 'ElqvHjrR4IQ',
-            playerVars: {
-                'autoplay': 0,
-                'controls': 0,
-                'start': 12,
-                'playsinline': 1,
-                'enablejsapi': 1,
-                'origin': window.location.origin
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
+    var player; var isPlaying = false; var hasStarted = false; var progressInterval;
+    var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+    function onYouTubeIframeAPIReady() { 
+        player = new YT.Player('yt-player', { 
+            height: '0', width: '0', videoId: 'ElqvHjrR4IQ', 
+            playerVars: { 'start': 12, 'controls': 0 }
+        }); 
     }
 
-    function onPlayerReady(event) {
-        // Hazır olduğunda sessize al (Instagram kısıtlamasını aşmak için)
-        player.mute();
+    function updateProgressBar() { 
+        if (player && player.getDuration) { 
+            var currentTime = player.getCurrentTime(); 
+            var duration = player.getDuration(); 
+            var percentage = (currentTime / duration) * 100; 
+            document.getElementById('progress').style.width = percentage + "%"; 
+        } 
     }
 
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING) {
-            progressInterval = setInterval(updateProgressBar, 1000);
-        } else {
-            clearInterval(progressInterval);
-        }
+    function togglePlay() { 
+        if (!isPlaying) { 
+            if (!hasStarted) { player.seekTo(12); hasStarted = true; }
+            player.playVideo(); 
+            document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
+            isPlaying = true; 
+            progressInterval = setInterval(updateProgressBar, 1000); 
+        } else { 
+            player.pauseVideo(); 
+            document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; 
+            isPlaying = false; 
+            clearInterval(progressInterval); 
+        } 
     }
-
-    function updateProgressBar() {
-        if (player && player.getDuration) {
-            var percentage = (player.getCurrentTime() / player.getDuration()) * 100;
-            document.getElementById('progress').style.width = percentage + "%";
-        }
-    }
-
-    function togglePlay() {
-        if (!isPlaying) {
-            player.unMute(); // Kullanıcı dokunduğu an sesi aç
-            player.playVideo();
-            document.getElementById('play-icon').innerText = '⏸';
-            isPlaying = true;
-        } else {
-            player.pauseVideo();
-            document.getElementById('play-icon').innerText = '▶';
-            isPlaying = false;
-        }
-    }
-
-    function seekBack() { player.seekTo(player.getCurrentTime() - 10); }
+    
+    function seekBack() { player.seekTo(player.getCurrentTime() - 10); } 
     function seekForward() { player.seekTo(player.getCurrentTime() + 10); }
 </script>
 
