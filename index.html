@@ -11,7 +11,7 @@
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
             padding-bottom: 100px; /* Varsayılan boşluk */
-            transition: padding-bottom 0.5s ease; /* Yumuşak kayma efekti */
+            transition: padding-bottom 0.5s ease; 
         }
 
         .dashboard-container {
@@ -229,7 +229,7 @@
             </a>
         </div>
 
-        <div class="info-bubble">
+        <div class="info-bubble" id="infoBox">
             <strong>Ders notlarına erişmek için:</strong>
             Giriş tuşuna bastıktan sonra sol üstteki menüye tıklayarak ders notlarına erişebilirsiniz.
             <br><br>
@@ -277,19 +277,45 @@
         }); 
     }
 
+    // Sayfa yüklendiğinde hafızadaki durumu kontrol et
+    window.onload = function() {
+        const playerState = localStorage.getItem('musicPlayerActive');
+        if (playerState === 'true') {
+            applyPanelState(true, false); // Sayfa yeni açıldığında animasyonsuz anında açılması için
+        }
+    };
+
     function togglePlayerPanel() {
+        var panel = document.getElementById('playerPanel');
+        var isCurrentlyActive = panel.classList.contains('active');
+        applyPanelState(!isCurrentlyActive, true);
+    }
+
+    function applyPanelState(isActive, shouldScroll) {
         var panel = document.getElementById('playerPanel');
         var trigger = document.getElementById('musicTrigger');
         var body = document.body;
-        
-        panel.classList.toggle('active');
-        
-        if(panel.classList.contains('active')) {
+
+        if (isActive) {
+            panel.classList.add('active');
             trigger.classList.add('hidden');
-            body.style.paddingBottom = "250px"; // Panel açıldığında notları yukarı iten boşluk
+            body.style.paddingBottom = "280px"; 
+            localStorage.setItem('musicPlayerActive', 'true');
+            
+            // Not kısmını otomatik olarak yukarı kaydır
+            if (shouldScroll) {
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }, 300);
+            }
         } else {
+            panel.classList.remove('active');
             trigger.classList.remove('hidden');
-            body.style.paddingBottom = "100px"; // Panel kapandığında eski haline döner
+            body.style.paddingBottom = "100px";
+            localStorage.setItem('musicPlayerActive', 'false');
         }
     }
 
