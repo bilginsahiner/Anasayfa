@@ -120,7 +120,7 @@
             font-style: italic;
         }
 
-        /* --- Müzik Çalar Tasarımı (Güncellendi) --- */
+        /* --- Müzik Çalar Tasarımı --- */
         
         .music-trigger {
             position: fixed;
@@ -151,7 +151,6 @@
             bottom: -300px;
             left: 0;
             width: 100%;
-            /* Resim Tam Boyut + Boşluklarda Desen */
             background-color: #1e1e26;
             background-image: radial-gradient(rgba(98, 70, 234, 0.15) 1px, transparent 1px);
             background-size: 20px 20px;
@@ -167,7 +166,6 @@
             border-radius: 20px 20px 0 0;
         }
 
-        /* Resim için özel katman: Tam boyutu bu sağlar */
         .player-bg-image {
             position: absolute;
             top: 0;
@@ -176,8 +174,8 @@
             height: 100%;
             background-repeat: no-repeat;
             background-position: center;
-            background-size: contain; /* Resmi kesmeden sığdırır */
-            opacity: 0.3; /* Yazıların okunması için hafif şeffaflık */
+            background-size: contain;
+            opacity: 0.3;
             z-index: -1;
             pointer-events: none;
         }
@@ -223,13 +221,14 @@
         .controls { display: flex; align-items: center; gap: 30px; }
         .control-btn { background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; }
 
+        /* Oynatma butonu gölgesi küçültüldü ve saydamlaştırıldı */
         .play-btn {
             background: #6246ea;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
+            box-shadow: 0 2px 8px rgba(98, 70, 234, 0.3); 
         }
     </style>
 </head>
@@ -294,7 +293,8 @@
 </div>
 
 <div class="music-player" id="playerPanel">
-    <div class="player-bg-image" id="playerBg"></div> <div class="close-player" onclick="togglePlayerPanel()"></div>
+    <div class="player-bg-image" id="playerBg"></div> 
+    <div class="close-player" onclick="togglePlayerPanel()"></div>
     <div class="track-name" id="display-track-name">ب</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
@@ -336,8 +336,6 @@
         var track = tracks[currentTrackIndex];
         audio.src = track.src;
         document.getElementById('display-track-name').innerText = track.name;
-        
-        // Yeni Tam Boyutlu Arkaplan Sistemi
         document.getElementById('playerBg').style.backgroundImage = `url('${track.bg}')`;
         
         audio.currentTime = track.start;
