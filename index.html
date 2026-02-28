@@ -18,7 +18,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 100px; 
+            padding-bottom: 100px; /* Varsayılan boşluk */
             transition: padding-bottom 0.5s ease; 
         }
 
@@ -97,6 +97,7 @@
             margin-bottom: 5px;
         }
 
+        /* Hadis Bölümü */
         .hadis-box {
             margin-top: 20px;
             text-align: center;
@@ -120,7 +121,7 @@
             font-style: italic;
         }
 
-        /* --- Müzik Çalar Tasarımı (Güncellendi) --- */
+        /* --- Müzik Çalar Tasarımı --- */
         
         .music-trigger {
             position: fixed;
@@ -151,10 +152,10 @@
             bottom: -300px;
             left: 0;
             width: 100%;
-            /* Resim Tam Boyut + Boşluklarda Desen */
-            background-color: #1e1e26;
-            background-image: radial-gradient(rgba(98, 70, 234, 0.15) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background: linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), 
+                        url('ب.jpg'); 
+            background-size: cover;
+            background-position: center; 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-top: 2px solid #6246ea;
@@ -165,21 +166,6 @@
             z-index: 9999;
             transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 20px 20px 0 0;
-        }
-
-        /* Resim için özel katman: Tam boyutu bu sağlar */
-        .player-bg-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain; /* Resmi kesmeden sığdırır */
-            opacity: 0.3; /* Yazıların okunması için hafif şeffaflık */
-            z-index: -1;
-            pointer-events: none;
         }
 
         .music-player.active { bottom: 0; }
@@ -197,7 +183,7 @@
             font-size: 24px;
             margin-bottom: 5px;
             color: #6246ea;
-            text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             font-weight: bold;
         }
 
@@ -205,7 +191,7 @@
             width: 80%;
             max-width: 300px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
@@ -276,12 +262,15 @@
         <div class="info-bubble" id="infoBox">
             <strong>Ders notlarına erişmek için:</strong>
             Giriş tuşuna bastıktan sonra sol üstteki menüye tıklayarak ders notlarına erişebilirsiniz.
+            <br><br>
+            Elinizdeki hazır notların bu formatta olması için iletişim kanallarımızdan bize ulaşın. Kabul edilen not türleri PDF ve metin türünde olan notlardır. Bunun dışındaki formatlar kabul edilmeyecektir.
         </div>
 
         <div class="hadis-box">
             <span class="hadis-arapca">سَيِّدُ الْقَوْمِ خَادِمُهُمْ</span>
             <span class="hadis-turkce">"Milletin efendisi, onlara hizmet edendir."</span>
         </div>
+
     </header>
 </div>
 
@@ -294,7 +283,7 @@
 </div>
 
 <div class="music-player" id="playerPanel">
-    <div class="player-bg-image" id="playerBg"></div> <div class="close-player" onclick="togglePlayerPanel()"></div>
+    <div class="close-player" onclick="togglePlayerPanel()"></div>
     <div class="track-name" id="display-track-name">ب</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
@@ -317,6 +306,7 @@
     var isPlaying = false;
     var progressInterval;
     
+    // Müzik Listesi
     var tracks = [
         { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
         { name: "حبيبتي", src: "Çok Güzel (Nakarat).m4a", bg: "ن.jpg", start: 0 }
@@ -336,10 +326,9 @@
         var track = tracks[currentTrackIndex];
         audio.src = track.src;
         document.getElementById('display-track-name').innerText = track.name;
+        document.getElementById('playerPanel').style.backgroundImage = `linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), url('${track.bg}')`;
         
-        // Yeni Tam Boyutlu Arkaplan Sistemi
-        document.getElementById('playerBg').style.backgroundImage = `url('${track.bg}')`;
-        
+        // Şarkı değişince başa sar ve ikon güncelle
         audio.currentTime = track.start;
         if (isPlaying) {
             audio.play();
@@ -372,9 +361,13 @@
             trigger.classList.add('hidden');
             body.style.paddingBottom = "280px"; 
             localStorage.setItem('musicPlayerActive', 'true');
+            
             if (shouldScroll) {
                 setTimeout(() => {
-                    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
                 }, 300);
             }
         } else {
@@ -406,7 +399,9 @@
         } 
     }
 
-    audio.onended = function() { nextTrack(); };
+    audio.onended = function() {
+        nextTrack(); // Şarkı bitince otomatik sonrakine geç
+    };
 </script>
 
 </body>
