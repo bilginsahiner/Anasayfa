@@ -293,6 +293,11 @@
             body.style.paddingBottom = "280px"; 
             localStorage.setItem('musicPlayerActive', 'true');
             
+            // PANEL AÇILDIĞINDA OTOMATİK OYNATMA TETİKLEYİCİSİ
+            if (!isPlaying) {
+                togglePlay();
+            }
+
             if (shouldScroll) {
                 setTimeout(() => {
                     window.scrollTo({
@@ -322,7 +327,9 @@
                 audio.currentTime = 12; 
                 hasStarted = true;
             }
-            audio.play(); 
+            audio.play().catch(function(error) {
+                console.log("Tarayıcı engelledi, etkileşim gerekiyor.");
+            }); 
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
             progressInterval = setInterval(updateProgressBar, 500); 
