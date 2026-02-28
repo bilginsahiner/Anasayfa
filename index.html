@@ -284,16 +284,16 @@
 
 <div class="music-player" id="playerPanel">
     <div class="close-player" onclick="togglePlayerPanel()"></div>
-    <div class="track-name">ب</div>
+    <div class="track-name" id="display-track-name">ب</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     <div class="controls">
-        <button class="control-btn" onclick="seekBack()">
+        <button class="control-btn" onclick="prevTrack()">
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
         <button class="control-btn play-btn" onclick="togglePlay()">
             <svg id="play-icon" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
-        <button class="control-btn" onclick="seekForward()">
+        <button class="control-btn" onclick="nextTrack()">
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
     </div>
@@ -304,15 +304,46 @@
 <script>
     var audio = document.getElementById('main-audio');
     var isPlaying = false;
-    var hasStarted = false; 
     var progressInterval;
+    
+    // Müzik Listesi
+    var tracks = [
+        { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
+        { name: "حبيبتي", src: "Çok Güzel (Nakarat).m4a", bg: "ن.jpg", start: 0 }
+    ];
+    var currentTrackIndex = 0;
 
     window.onload = function() {
         const playerState = localStorage.getItem('musicPlayerActive');
         if (playerState === 'true') {
             applyPanelState(true, false); 
         }
+        loadTrack(0);
     };
+
+    function loadTrack(index) {
+        currentTrackIndex = index;
+        var track = tracks[currentTrackIndex];
+        audio.src = track.src;
+        document.getElementById('display-track-name').innerText = track.name;
+        document.getElementById('playerPanel').style.backgroundImage = `linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), url('${track.bg}')`;
+        
+        // Şarkı değişince başa sar ve ikon güncelle
+        audio.currentTime = track.start;
+        if (isPlaying) {
+            audio.play();
+        }
+    }
+
+    function nextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadTrack(currentTrackIndex);
+    }
+
+    function prevTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        loadTrack(currentTrackIndex);
+    }
 
     function togglePlayerPanel() {
         var panel = document.getElementById('playerPanel');
@@ -356,10 +387,6 @@
 
     function togglePlay() { 
         if (audio.paused) { 
-            if (!hasStarted) {
-                audio.currentTime = 11; 
-                hasStarted = true;
-            }
             audio.play(); 
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
@@ -371,16 +398,9 @@
             clearInterval(progressInterval); 
         } 
     }
-    
-    function seekBack() { audio.currentTime -= 10; } 
-    function seekForward() { audio.currentTime += 10; }
 
     audio.onended = function() {
-        document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-        isPlaying = false;
-        hasStarted = false; 
-        clearInterval(progressInterval);
-        document.getElementById('progress').style.width = "0%";
+        nextTrack(); // Şarkı bitince otomatik sonrakine geç
     };
 </script>
 
