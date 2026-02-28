@@ -166,7 +166,6 @@
             border-radius: 20px 20px 0 0;
         }
 
-        /* Resim Tam Boyut Katmanı */
         .player-bg-image {
             position: absolute;
             top: 0;
@@ -223,14 +222,14 @@
         .control-btn { background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; }
 
         .play-btn {
-            background: #6246ea;
-            /* Daire boyutu küçültüldü */
+            /* Mor daire rengi %5 görünür (0.05 alpha) yapıldı */
+            background: rgba(98, 70, 234, 0.05);
             width: 38px;
             height: 38px;
             border-radius: 50%;
             justify-content: center;
-            /* Morluk (gölge) küçültüldü ve saydamlaştırıldı */
-            box-shadow: 0 1px 6px rgba(98, 70, 234, 0.25); 
+            /* Gölge iyice belirsizleştirildi */
+            box-shadow: 0 1px 4px rgba(98, 70, 234, 0.05); 
         }
 
         .play-btn svg {
@@ -345,10 +344,7 @@
         var track = tracks[currentTrackIndex];
         audio.src = track.src;
         document.getElementById('display-track-name').innerText = track.name;
-        
-        // Tam Boyutlu Arkaplan Sistemi
         document.getElementById('playerBg').style.backgroundImage = `url('${track.bg}')`;
-        
         audio.currentTime = track.start;
         if (isPlaying) {
             audio.play();
