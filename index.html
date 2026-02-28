@@ -18,7 +18,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 100px; /* Varsayılan boşluk */
+            padding-bottom: 100px; 
             transition: padding-bottom 0.5s ease; 
         }
 
@@ -97,7 +97,6 @@
             margin-bottom: 5px;
         }
 
-        /* Hadis Bölümü */
         .hadis-box {
             margin-top: 20px;
             text-align: center;
@@ -121,7 +120,7 @@
             font-style: italic;
         }
 
-        /* --- Müzik Çalar Tasarımı --- */
+        /* --- Müzik Çalar Tasarımı (Tam Boyut + Arka Plan Deseni) --- */
         
         .music-trigger {
             position: fixed;
@@ -152,10 +151,9 @@
             bottom: -300px;
             left: 0;
             width: 100%;
-            background: linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), 
-                        url('ب.jpg'); 
-            background-size: cover;
-            background-position: center; 
+            background-color: #1e1e26;
+            background-image: radial-gradient(rgba(98, 70, 234, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-top: 2px solid #6246ea;
@@ -166,6 +164,21 @@
             z-index: 9999;
             transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 20px 20px 0 0;
+        }
+
+        /* Resim Tam Boyut Katmanı */
+        .player-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
         }
 
         .music-player.active { bottom: 0; }
@@ -183,7 +196,7 @@
             font-size: 24px;
             margin-bottom: 5px;
             color: #6246ea;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1);
             font-weight: bold;
         }
 
@@ -191,7 +204,7 @@
             width: 80%;
             max-width: 300px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             margin-bottom: 20px;
             overflow: hidden;
@@ -211,11 +224,18 @@
 
         .play-btn {
             background: #6246ea;
-            width: 50px;
-            height: 50px;
+            /* Daire boyutu küçültüldü */
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
+            /* Morluk (gölge) küçültüldü ve saydamlaştırıldı */
+            box-shadow: 0 1px 6px rgba(98, 70, 234, 0.25); 
+        }
+
+        .play-btn svg {
+            width: 22px;
+            height: 22px;
         }
     </style>
 </head>
@@ -270,7 +290,6 @@
             <span class="hadis-arapca">سَيِّدُ الْقَوْمِ خَادِمُهُمْ</span>
             <span class="hadis-turkce">"Milletin efendisi, onlara hizmet edendir."</span>
         </div>
-
     </header>
 </div>
 
@@ -283,6 +302,7 @@
 </div>
 
 <div class="music-player" id="playerPanel">
+    <div class="player-bg-image" id="playerBg"></div> 
     <div class="close-player" onclick="togglePlayerPanel()"></div>
     <div class="track-name" id="display-track-name">ب</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
@@ -291,7 +311,7 @@
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
         </button>
         <button class="control-btn play-btn" onclick="togglePlay()">
-            <svg id="play-icon" width="30" height="30" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         </button>
         <button class="control-btn" onclick="nextTrack()">
             <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
@@ -306,7 +326,6 @@
     var isPlaying = false;
     var progressInterval;
     
-    // Müzik Listesi
     var tracks = [
         { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
         { name: "حبيبتي", src: "Çok Güzel (Nakarat).m4a", bg: "ن.jpg", start: 0 }
@@ -326,9 +345,10 @@
         var track = tracks[currentTrackIndex];
         audio.src = track.src;
         document.getElementById('display-track-name').innerText = track.name;
-        document.getElementById('playerPanel').style.backgroundImage = `linear-gradient(rgba(30, 30, 38, 0.92), rgba(30, 30, 38, 0.92)), url('${track.bg}')`;
         
-        // Şarkı değişince başa sar ve ikon güncelle
+        // Tam Boyutlu Arkaplan Sistemi
+        document.getElementById('playerBg').style.backgroundImage = `url('${track.bg}')`;
+        
         audio.currentTime = track.start;
         if (isPlaying) {
             audio.play();
@@ -361,13 +381,9 @@
             trigger.classList.add('hidden');
             body.style.paddingBottom = "280px"; 
             localStorage.setItem('musicPlayerActive', 'true');
-            
             if (shouldScroll) {
                 setTimeout(() => {
-                    window.scrollTo({
-                        top: document.body.scrollHeight,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
                 }, 300);
             }
         } else {
@@ -399,9 +415,7 @@
         } 
     }
 
-    audio.onended = function() {
-        nextTrack(); // Şarkı bitince otomatik sonrakine geç
-    };
+    audio.onended = function() { nextTrack(); };
 </script>
 
 </body>
