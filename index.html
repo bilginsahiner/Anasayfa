@@ -161,12 +161,13 @@
             animation: skeleton-loading 1.5s infinite linear;
         }
 
-        .player-bg-image {
+        .player-bg-image, .player-bg-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -176,7 +177,7 @@
             transition: opacity 0.8s ease;
         }
 
-        .player-bg-image.loaded {
+        .player-bg-image.loaded, .player-bg-video.active {
             opacity: 0.45;
         }
 
@@ -387,6 +388,7 @@
 
 <div class="music-player" id="playerPanel">
     <div class="skeleton-loader"></div>
+    <video class="player-bg-video" id="playerVideo" loop muted playsinline></video>
     <div class="player-bg-image" id="playerBg"></div> 
     <div class="close-player" onclick="togglePlayerPanel()"></div>
     <div class="track-name" id="display-track-name">Yükleniyor...</div>
@@ -419,6 +421,7 @@
     var progressInterval;
     
     var tracks = [
+        { name: "هذا", src: "هذا.m4a", video: "هذا.mp4", start: 0 },
         { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
         { name: "ا", src: "ا.m4a", bg: "ا.jpg", start: 0 },
         { name: "ح", src: "ح.m4a", bg: "ح.jpg", start: 0 },
@@ -436,20 +439,35 @@
         currentTrackIndex = index;
         var track = tracks[currentTrackIndex];
         var bgElement = document.getElementById('playerBg');
+        var videoElement = document.getElementById('playerVideo');
         
+        // Önceki durumları temizle
         bgElement.classList.remove('loaded');
-        var img = new Image();
-        img.src = track.bg;
-        img.onload = function() {
-            bgElement.style.backgroundImage = `url('${track.bg}')`;
-            bgElement.classList.add('loaded');
-        };
+        videoElement.classList.remove('active');
+        videoElement.pause();
+        videoElement.src = "";
+
+        if (track.video) {
+            videoElement.src = track.video;
+            videoElement.classList.add('active');
+            if (isPlaying) videoElement.play();
+        } else if (track.bg) {
+            var img = new Image();
+            img.src = track.bg;
+            img.onload = function() {
+                bgElement.style.backgroundImage = `url('${track.bg}')`;
+                bgElement.classList.add('loaded');
+            };
+        }
 
         audio.src = track.src;
         document.getElementById('display-track-name').innerText = track.name;
         audio.currentTime = track.start;
         
-        if (isPlaying) audio.play();
+        if (isPlaying) {
+            audio.play();
+            if (track.video) videoElement.play();
+        }
         renderPlaylist();
     }
 
@@ -505,8 +523,10 @@
     }
 
     function togglePlay() { 
+        var videoElement = document.getElementById('playerVideo');
         if (audio.paused) { 
             audio.play().catch(e => console.log("Otomatik oynatma kısıtlı.")); 
+            if (tracks[currentTrackIndex].video) videoElement.play();
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
             progressInterval = setInterval(() => {
@@ -514,6 +534,7 @@
             }, 500); 
         } else { 
             audio.pause(); 
+            if (tracks[currentTrackIndex].video) videoElement.pause();
             document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; 
             isPlaying = false; 
             clearInterval(progressInterval); 
