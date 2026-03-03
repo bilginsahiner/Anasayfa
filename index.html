@@ -18,7 +18,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 100px; 
+            padding-bottom: 320px; /* Panel açık başlayacağı için */
             transition: padding-bottom 0.5s ease; 
         }
 
@@ -97,29 +97,6 @@
             margin-bottom: 5px;
         }
 
-        .hadis-box {
-            margin-top: 20px;
-            text-align: center;
-            padding: 15px;
-            background: rgba(98, 70, 234, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(98, 70, 234, 0.1);
-        }
-
-        .hadis-arapca {
-            font-size: 1.4rem;
-            color: #ffffff;
-            margin-bottom: 8px;
-            display: block;
-            direction: rtl;
-        }
-
-        .hadis-turkce {
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            font-style: italic;
-        }
-
         /* --- Müzik Çalar Tasarımı --- */
         
         .music-trigger {
@@ -138,12 +115,15 @@
             box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
             z-index: 10000;
             transition: all 0.3s ease;
-        }
-
-        .music-trigger.hidden {
             opacity: 0;
             pointer-events: none;
             transform: scale(0.5);
+        }
+
+        .music-trigger.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
         }
 
         .music-player {
@@ -165,6 +145,22 @@
             overflow: hidden;
         }
 
+        @keyframes skeleton-loading {
+            0% { background-color: rgba(255, 255, 255, 0.05); }
+            50% { background-color: rgba(255, 255, 255, 0.1); }
+            100% { background-color: rgba(255, 255, 255, 0.05); }
+        }
+
+        .skeleton-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            animation: skeleton-loading 1.5s infinite linear;
+        }
+
         .player-bg-image {
             position: absolute;
             top: 0;
@@ -174,9 +170,14 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
-            opacity: 0.45;
+            opacity: 0;
             z-index: -1;
             pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .player-bg-image.loaded {
+            opacity: 0.45;
         }
 
         .music-player::before {
@@ -262,7 +263,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
         }
 
-        /* Liste Paneli Tasarımı */
         .playlist-panel {
             position: fixed;
             bottom: -100%;
@@ -316,9 +316,7 @@
             box-shadow: 0 0 8px #6246ea;
         }
 
-        .active-track .track-indicator {
-            display: block;
-        }
+        .active-track .track-indicator { display: block; }
     </style>
 </head>
 <body>
@@ -388,9 +386,10 @@
 </div>
 
 <div class="music-player" id="playerPanel">
+    <div class="skeleton-loader"></div>
     <div class="player-bg-image" id="playerBg"></div> 
     <div class="close-player" onclick="togglePlayerPanel()"></div>
-    <div class="track-name" id="display-track-name">ب</div>
+    <div class="track-name" id="display-track-name">Yükleniyor...</div>
     <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
     
     <div class="controls">
@@ -412,7 +411,7 @@
     </div>
 </div>
 
-<audio id="main-audio" src="ب.mp3"></audio>
+<audio id="main-audio"></audio>
 
 <script>
     var audio = document.getElementById('main-audio');
@@ -429,11 +428,30 @@
     var currentTrackIndex = 0;
 
     window.onload = function() {
-        if (localStorage.getItem('musicPlayerActive') === 'true') {
-            applyPanelState(true, false); 
-        }
+        applyPanelState(true, false); // Sayfa açılınca müzik çalar açık başlar
         loadTrack(0);
     };
+
+    function loadTrack(index) {
+        currentTrackIndex = index;
+        var track = tracks[currentTrackIndex];
+        var bgElement = document.getElementById('playerBg');
+        
+        bgElement.classList.remove('loaded');
+        var img = new Image();
+        img.src = track.bg;
+        img.onload = function() {
+            bgElement.style.backgroundImage = `url('${track.bg}')`;
+            bgElement.classList.add('loaded');
+        };
+
+        audio.src = track.src;
+        document.getElementById('display-track-name').innerText = track.name;
+        audio.currentTime = track.start;
+        
+        if (isPlaying) audio.play();
+        renderPlaylist();
+    }
 
     function renderPlaylist() {
         const listContainer = document.getElementById('playlist-items');
@@ -453,20 +471,7 @@
 
     function togglePlaylist() {
         document.getElementById('playlistPanel').classList.toggle('active');
-        if (document.getElementById('playlistPanel').classList.contains('active')) {
-            renderPlaylist();
-        }
-    }
-
-    function loadTrack(index) {
-        currentTrackIndex = index;
-        var track = tracks[currentTrackIndex];
-        audio.src = track.src;
-        document.getElementById('display-track-name').innerText = track.name;
-        document.getElementById('playerBg').style.backgroundImage = `url('${track.bg}')`;
-        audio.currentTime = track.start;
-        if (isPlaying) audio.play();
-        renderPlaylist();
+        if (document.getElementById('playlistPanel').classList.contains('active')) renderPlaylist();
     }
 
     function nextTrack() {
@@ -488,22 +493,20 @@
         var trigger = document.getElementById('musicTrigger');
         if (isActive) {
             panel.classList.add('active');
-            trigger.classList.add('hidden');
+            trigger.classList.remove('visible');
             document.body.style.paddingBottom = "320px";
-            localStorage.setItem('musicPlayerActive', 'true');
             if (shouldScroll) setTimeout(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}), 300);
         } else {
             panel.classList.remove('active');
-            trigger.classList.remove('hidden');
+            trigger.classList.add('visible');
             document.body.style.paddingBottom = "100px";
-            localStorage.setItem('musicPlayerActive', 'false');
             document.getElementById('playlistPanel').classList.remove('active');
         }
     }
 
     function togglePlay() { 
         if (audio.paused) { 
-            audio.play(); 
+            audio.play().catch(e => console.log("Otomatik oynatma kısıtlı.")); 
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
             progressInterval = setInterval(() => {
