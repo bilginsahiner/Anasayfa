@@ -18,7 +18,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 320px; /* Panel açık başlayacağı için */
+            padding-bottom: 320px; 
             transition: padding-bottom 0.5s ease; 
         }
 
@@ -177,8 +177,9 @@
             transition: opacity 0.8s ease;
         }
 
+        /* Videonun aktifleştiğinde görünür olmasını sağladık */
         .player-bg-image.loaded, .player-bg-video.active {
-            opacity: 0.45;
+            opacity: 0.45 !important;
         }
 
         .music-player::before {
@@ -189,7 +190,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to top, rgba(18,18,18,0.85), transparent);
-            z-index: -1;
+            z-index: 0;
         }
 
         .music-player.active { bottom: 0; }
@@ -431,7 +432,7 @@
     var currentTrackIndex = 0;
 
     window.onload = function() {
-        applyPanelState(true, false); // Sayfa açılınca müzik çalar açık başlar
+        applyPanelState(true, false); 
         loadTrack(0);
     };
 
@@ -441,7 +442,6 @@
         var bgElement = document.getElementById('playerBg');
         var videoElement = document.getElementById('playerVideo');
         
-        // Önceki durumları temizle
         bgElement.classList.remove('loaded');
         videoElement.classList.remove('active');
         videoElement.pause();
@@ -449,8 +449,12 @@
 
         if (track.video) {
             videoElement.src = track.video;
+            videoElement.load(); // Videoyu önceden hazırla
             videoElement.classList.add('active');
-            if (isPlaying) videoElement.play();
+            // Eğer müzik çalıyorsa videoyu da başlat
+            if (isPlaying) {
+                videoElement.play().catch(e => console.log("Video oynatılamadı"));
+            }
         } else if (track.bg) {
             var img = new Image();
             img.src = track.bg;
@@ -466,7 +470,6 @@
         
         if (isPlaying) {
             audio.play();
-            if (track.video) videoElement.play();
         }
         renderPlaylist();
     }
@@ -524,9 +527,14 @@
 
     function togglePlay() { 
         var videoElement = document.getElementById('playerVideo');
+        var track = tracks[currentTrackIndex];
+
         if (audio.paused) { 
-            audio.play().catch(e => console.log("Otomatik oynatma kısıtlı.")); 
-            if (tracks[currentTrackIndex].video) videoElement.play();
+            audio.play().catch(e => console.log("Ses hatası")); 
+            // Eğer şarkının videosu varsa videoyu da oynat
+            if (track.video) {
+                videoElement.play().catch(e => console.log("Video hatası"));
+            }
             document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
             isPlaying = true; 
             progressInterval = setInterval(() => {
@@ -534,7 +542,10 @@
             }, 500); 
         } else { 
             audio.pause(); 
-            if (tracks[currentTrackIndex].video) videoElement.pause();
+            // Videoyu durdur
+            if (track.video) {
+                videoElement.pause();
+            }
             document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; 
             isPlaying = false; 
             clearInterval(progressInterval); 
