@@ -422,7 +422,7 @@
     var progressInterval;
     
     var tracks = [
-        { name: "هذا", src: "هذا.m4a", video: "هذا.mp4", start: 30 },
+        { name: "هذا", src: "هذا.m4a", bg: "هذا.gif", start: 30 },
         { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
         { name: "ا", src: "ا.m4a", bg: "ا.jpg", start: 0 },
         { name: "ح", src: "ح.m4a", bg: "ح.jpg", start: 0 },
@@ -449,9 +449,8 @@
 
         if (track.video) {
             videoElement.src = track.video;
-            videoElement.load(); // Videoyu önceden hazırla
+            videoElement.load(); 
             videoElement.classList.add('active');
-            // Eğer müzik çalıyorsa videoyu da başlat
             if (isPlaying) {
                 videoElement.play().catch(e => console.log("Video oynatılamadı"));
             }
@@ -531,7 +530,6 @@
 
         if (audio.paused) { 
             audio.play().catch(e => console.log("Ses hatası")); 
-            // Eğer şarkının videosu varsa videoyu da oynat
             if (track.video) {
                 videoElement.play().catch(e => console.log("Video hatası"));
             }
@@ -542,7 +540,6 @@
             }, 500); 
         } else { 
             audio.pause(); 
-            // Videoyu durdur
             if (track.video) {
                 videoElement.pause();
             }
