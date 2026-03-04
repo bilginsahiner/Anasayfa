@@ -18,8 +18,7 @@
             background-color: #121212;
             font-family: 'Segoe UI', sans-serif;
             color: #e0e0e0;
-            padding-bottom: 320px; 
-            transition: padding-bottom 0.5s ease; 
+            padding-bottom: 50px; 
         }
 
         .dashboard-container {
@@ -97,228 +96,30 @@
             margin-bottom: 5px;
         }
 
-        /* --- Müzik Çalar Tasarımı --- */
-        
-        .music-trigger {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 40px;
-            height: 40px;
-            background: #6246ea;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.6);
-            z-index: 10000;
-            transition: all 0.3s ease;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.5);
+        /* Ayet Baloncuğu - Mor çizgi kaldırıldı */
+        .verse-bubble {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Çok hafif bir çerçeve eklendi */
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
         }
 
-        .music-trigger.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-        }
-
-        .music-player {
-            position: fixed;
-            bottom: -320px;
-            left: 0;
-            width: 100%;
-            background-color: #1e1e26;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-top: 2px solid #6246ea;
-            padding: 10px 0 30px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 9999;
-            transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 20px 20px 0 0;
-            overflow: hidden;
-        }
-
-        @keyframes skeleton-loading {
-            0% { background-color: rgba(255, 255, 255, 0.05); }
-            50% { background-color: rgba(255, 255, 255, 0.1); }
-            100% { background-color: rgba(255, 255, 255, 0.05); }
-        }
-
-        .skeleton-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            animation: skeleton-loading 1.5s infinite linear;
-        }
-
-        .player-bg-image, .player-bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            opacity: 0;
-            z-index: -1;
-            pointer-events: none;
-            transition: opacity 0.8s ease;
-        }
-
-        /* Videonun aktifleştiğinde görünür olmasını sağladık */
-        .player-bg-image.loaded, .player-bg-video.active {
-            opacity: 0.45 !important;
-        }
-
-        .music-player::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(18,18,18,0.85), transparent);
-            z-index: 0;
-        }
-
-        .music-player.active { bottom: 0; }
-
-        .close-player {
-            width: 40px;
-            height: 4px;
-            background: rgba(255,255,255,0.6);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-        }
-
-        .track-name {
-            font-size: 24px;
-            margin-bottom: 5px;
+        .arabic-text {
+            font-size: 1.2rem;
             color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-            font-weight: bold;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 8px;
+            display: block;
+            direction: rtl;
         }
 
-        .progress-container {
-            width: 80%;
-            max-width: 300px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            position: relative;
-            z-index: 2;
+        .turkish-text {
+            font-size: 0.85rem;
+            color: #808080;
+            font-style: italic;
+            display: block;
         }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #6246ea;
-            box-shadow: 0 0 8px rgba(98, 70, 234, 0.8);
-            transition: width 0.1s linear;
-        }
-
-        .controls { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            gap: 20px; 
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
-
-        .control-btn { 
-            background: none; 
-            border: none; 
-            color: white; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            padding: 8px;
-        }
-
-        .play-btn {
-            background: rgba(98, 70, 234, 0.4);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
-        }
-
-        .playlist-panel {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: #1e1e26;
-            z-index: 10001;
-            transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 20px 20px 0 0;
-            padding: 20px;
-            box-sizing: border-box;
-            border-top: 2px solid #6246ea;
-            overflow-y: auto;
-        }
-        .playlist-panel.active { bottom: 0; }
-        .playlist-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-            color: #6246ea; 
-            font-weight: bold; 
-            font-size: 1.1rem;
-        }
-        
-        .playlist-item { 
-            padding: 15px 10px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-            cursor: pointer; 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: background 0.3s;
-            border-radius: 8px;
-        }
-        
-        .playlist-item.active-track {
-            background: rgba(98, 70, 234, 0.15);
-            color: #ffffff;
-            font-weight: bold;
-            border-left: 3px solid #6246ea;
-        }
-
-        .track-indicator {
-            width: 8px;
-            height: 8px;
-            background: #6246ea;
-            border-radius: 50%;
-            display: none;
-            box-shadow: 0 0 8px #6246ea;
-        }
-
-        .active-track .track-indicator { display: block; }
     </style>
 </head>
 <body>
@@ -368,196 +169,13 @@
             Elinizdeki hazır notların bu formatta olması için iletişim kanallarımızdan bize ulaşın. Kabul edilen not türleri PDF ve metin türünde olan notlardır. Bunun dışındaki formatlar kabul edilmeyecektir.
         </div>
 
+        <div class="verse-bubble">
+            <span class="arabic-text">وَاللّٰهُ يُحِبُّ الْمُحْسِن۪ينَ</span>
+            <span class="turkish-text">"Allah, iyilik yapanları sever."</span>
+        </div>
+
     </header>
 </div>
-
-<div class="music-trigger" id="musicTrigger" onclick="togglePlayerPanel()">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18V5l12-2v13"></path>
-        <circle cx="6" cy="18" r="3"></circle>
-        <circle cx="18" cy="16" r="3"></circle>
-    </svg>
-</div>
-
-<div class="playlist-panel" id="playlistPanel">
-    <div class="playlist-header">
-        <span>Oynatma Listesi</span>
-        <span style="cursor:pointer; font-size: 24px;" onclick="togglePlaylist()">×</span>
-    </div>
-    <div id="playlist-items"></div>
-</div>
-
-<div class="music-player" id="playerPanel">
-    <div class="skeleton-loader"></div>
-    <video class="player-bg-video" id="playerVideo" loop muted playsinline></video>
-    <div class="player-bg-image" id="playerBg"></div> 
-    <div class="close-player" onclick="togglePlayerPanel()"></div>
-    <div class="track-name" id="display-track-name">Yükleniyor...</div>
-    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-    
-    <div class="controls">
-        <button class="control-btn" onclick="toggleMute()">
-            <svg id="mute-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-        </button>
-        <button class="control-btn" onclick="prevTrack()">
-            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-        </button>
-        <button class="control-btn play-btn" onclick="togglePlay()">
-            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <button class="control-btn" onclick="nextTrack()">
-            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-        </button>
-        <button class="control-btn" onclick="togglePlaylist()">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-        </button>
-    </div>
-</div>
-
-<audio id="main-audio"></audio>
-
-<script>
-    var audio = document.getElementById('main-audio');
-    var isPlaying = false;
-    var progressInterval;
-    
-    var tracks = [
-        { name: "هذا", src: "هذا.m4a", bg: "هذا.gif", start: 30 },
-        { name: "ب", src: "ب.mp3", bg: "ب.jpg", start: 11 },
-        { name: "ا", src: "ا.m4a", bg: "ا.jpg", start: 0 },
-        { name: "ح", src: "ح.m4a", bg: "ح.jpg", start: 0 },
-        { name: "ك", src: "ك.m4a", bg: "ك.jpg", start: 0 },
-        { name: "حبيبتي", src: "Çok Güzel (Nakarat).m4a", bg: "ن.jpg", start: 0 }
-    ];
-    var currentTrackIndex = 0;
-
-    window.onload = function() {
-        applyPanelState(true, false); 
-        loadTrack(0);
-    };
-
-    function loadTrack(index) {
-        currentTrackIndex = index;
-        var track = tracks[currentTrackIndex];
-        var bgElement = document.getElementById('playerBg');
-        var videoElement = document.getElementById('playerVideo');
-        
-        bgElement.classList.remove('loaded');
-        videoElement.classList.remove('active');
-        videoElement.pause();
-        videoElement.src = "";
-
-        if (track.video) {
-            videoElement.src = track.video;
-            videoElement.load(); 
-            videoElement.classList.add('active');
-            if (isPlaying) {
-                videoElement.play().catch(e => console.log("Video oynatılamadı"));
-            }
-        } else if (track.bg) {
-            var img = new Image();
-            img.src = track.bg;
-            img.onload = function() {
-                bgElement.style.backgroundImage = `url('${track.bg}')`;
-                bgElement.classList.add('loaded');
-            };
-        }
-
-        audio.src = track.src;
-        document.getElementById('display-track-name').innerText = track.name;
-        audio.currentTime = track.start;
-        
-        if (isPlaying) {
-            audio.play();
-        }
-        renderPlaylist();
-    }
-
-    function renderPlaylist() {
-        const listContainer = document.getElementById('playlist-items');
-        listContainer.innerHTML = '';
-        tracks.forEach((track, index) => {
-            const item = document.createElement('div');
-            item.className = 'playlist-item' + (index === currentTrackIndex ? ' active-track' : '');
-            item.innerHTML = `<span>${track.name}</span><div class="track-indicator"></div>`;
-            item.onclick = () => {
-                loadTrack(index);
-                if(!isPlaying) togglePlay();
-                togglePlaylist();
-            };
-            listContainer.appendChild(item);
-        });
-    }
-
-    function togglePlaylist() {
-        document.getElementById('playlistPanel').classList.toggle('active');
-        if (document.getElementById('playlistPanel').classList.contains('active')) renderPlaylist();
-    }
-
-    function nextTrack() {
-        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-        loadTrack(currentTrackIndex);
-    }
-
-    function prevTrack() {
-        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-        loadTrack(currentTrackIndex);
-    }
-
-    function togglePlayerPanel() {
-        applyPanelState(!document.getElementById('playerPanel').classList.contains('active'), true);
-    }
-
-    function applyPanelState(isActive, shouldScroll) {
-        var panel = document.getElementById('playerPanel');
-        var trigger = document.getElementById('musicTrigger');
-        if (isActive) {
-            panel.classList.add('active');
-            trigger.classList.remove('visible');
-            document.body.style.paddingBottom = "320px";
-            if (shouldScroll) setTimeout(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}), 300);
-        } else {
-            panel.classList.remove('active');
-            trigger.classList.add('visible');
-            document.body.style.paddingBottom = "100px";
-            document.getElementById('playlistPanel').classList.remove('active');
-        }
-    }
-
-    function togglePlay() { 
-        var videoElement = document.getElementById('playerVideo');
-        var track = tracks[currentTrackIndex];
-
-        if (audio.paused) { 
-            audio.play().catch(e => console.log("Ses hatası")); 
-            if (track.video) {
-                videoElement.play().catch(e => console.log("Video hatası"));
-            }
-            document.getElementById('play-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
-            isPlaying = true; 
-            progressInterval = setInterval(() => {
-                document.getElementById('progress').style.width = (audio.currentTime / audio.duration * 100) + "%";
-            }, 500); 
-        } else { 
-            audio.pause(); 
-            if (track.video) {
-                videoElement.pause();
-            }
-            document.getElementById('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>'; 
-            isPlaying = false; 
-            clearInterval(progressInterval); 
-        } 
-    }
-
-    function toggleMute() {
-        audio.muted = !audio.muted;
-        document.getElementById('mute-icon').innerHTML = audio.muted ? 
-            '<line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4.14a2 2 0 0 0-3.13-1.64L9 4.38"></path>' :
-            '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
-    }
-
-    audio.onended = function() { nextTrack(); };
-</script>
 
 </body>
 </html>
