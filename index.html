@@ -17,6 +17,7 @@
         * {
             -webkit-tap-highlight-color: transparent;
             outline: none !important;
+            box-sizing: border-box;
         }
 
         body {
@@ -102,11 +103,195 @@
             margin-bottom: 5px;
         }
 
-        /* Ayet Baloncuğu - Mor çizgi kaldırıldı */
+        /* --- FORM TASARIMLARI --- */
+        .contact-form {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(98, 70, 234, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-form h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group { margin-bottom: 18px; position: relative; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        /* --- ÖZEL SEÇİM KUTUSU TASARIMI --- */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+        }
+
+        .custom-select-trigger {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .custom-select-trigger:after {
+            content: '▼';
+            font-size: 0.7rem;
+            color: #a29bfe;
+            transition: all 0.3s ease;
+        }
+
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: #6246ea;
+            background: rgba(98, 70, 234, 0.08);
+        }
+
+        .custom-select-wrapper.open .custom-select-trigger:after {
+            transform: rotate(180deg);
+        }
+
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: #1e1e2e;
+            border: 1px solid rgba(98, 70, 234, 0.3);
+            border-radius: 12px;
+            z-index: 100;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-select-wrapper.open .custom-options {
+            display: block;
+        }
+
+        .custom-option {
+            padding: 12px 15px;
+            color: #d0d0d0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .custom-option:last-child { border-bottom: none; }
+
+        .custom-option:hover {
+            background: rgba(98, 70, 234, 0.2);
+            color: #fff;
+        }
+
+        .custom-option.selected {
+            background: rgba(98, 70, 234, 0.4);
+            color: #fff;
+        }
+
+        /* Diğer Form Elemanları */
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea:focus {
+            border-color: #6246ea;
+            background: rgba(98, 70, 234, 0.08);
+            outline: none;
+        }
+
+        .file-input-container {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            left: 0; top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .custom-file-upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(98, 70, 234, 0.1);
+            border: 1px dashed rgba(98, 70, 234, 0.5);
+            color: #a29bfe;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #6246ea;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(98, 70, 234, 0.2);
+        }
+
+        .submit-btn:active { transform: scale(0.97); }
+
+        .file-custom {
+            font-size: 0.75rem;
+            color: #808080;
+            margin-top: 8px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Ayet Baloncuğu */
         .verse-bubble {
             margin-top: 20px;
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05); /* Çok hafif bir çerçeve eklendi */
+            border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 12px;
             text-align: center;
@@ -175,6 +360,64 @@
             Elinizdeki hazır notların bu formatta olması için iletişim kanallarımızdan bize ulaşın. Kabul edilen not türleri PDF ve metin türünde olan notlardır. Bunun dışındaki formatlar kabul edilmeyecektir.
         </div>
 
+        <div class="contact-form">
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a29bfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Dosya & Not Gönderimi
+            </h3>
+            
+            <form id="google-sheet-form">
+                <div class="form-group">
+                    <label>Konu (Zorunlu)</label>
+                    <div class="custom-select-wrapper" id="customSelect">
+                        <div class="custom-select-trigger">Ders Seçiniz</div>
+                        <div class="custom-options">
+                            <div class="custom-option" data-value="Dinler Tarihi-II">Dinler Tarihi-II</div>
+                            <div class="custom-option" data-value="Tasavvuf-II">Tasavvuf-II</div>
+                            <div class="custom-option" data-value="Tasavvuf Metinleri">Tasavvuf Metinleri</div>
+                            <div class="custom-option" data-value="Sistematik Kelam-I">Sistematik Kelam-I</div>
+                            <div class="custom-option" data-value="Osmanlı Türkçesi Metin Okumaları">Osmanlı Türkçesi Metin Okumaları</div>
+                            <div class="custom-option" data-value="Mantık Yanlışları">Mantık Yanlışları</div>
+                            <div class="custom-option" data-value="Türk Düşünce Tarihi">Türk Düşünce Tarihi</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="subject" id="hiddenSubject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Not İçeriği (Zorunlu)</label>
+                    <textarea name="message" rows="4" placeholder="Not içeriği metin halindeyse buraya yapıştırın..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Dosya Ekle (Opsiyonel)</label>
+                    <div class="file-input-container">
+                        <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx">
+                        <div class="custom-file-upload">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span id="file-text">Dosya Seç veya Sürükle</span>
+                        </div>
+                    </div>
+                    <div class="file-custom">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a29bfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Desteklenen: PDF, TXT, DOC, DOCX
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">Notu Gönder</button>
+            </form>
+        </div>
+
         <div class="verse-bubble">
             <span class="arabic-text">وَاللّٰهُ يُحِبُّ الْمُحْسِنِينَ</span>
             <span class="turkish-text">"Allah, iyilik yapanları sever."</span>
@@ -182,6 +425,105 @@
 
     </header>
 </div>
+
+<script>
+    // --- ÖZEL SELECT KODU ---
+    const selectWrapper = document.getElementById('customSelect');
+    const trigger = selectWrapper.querySelector('.custom-select-trigger');
+    const options = selectWrapper.querySelectorAll('.custom-option');
+    const hiddenInput = document.getElementById('hiddenSubject');
+
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectWrapper.classList.toggle('open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const val = this.getAttribute('data-value');
+            trigger.textContent = val;
+            hiddenInput.value = val;
+            options.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            selectWrapper.classList.remove('open');
+        });
+    });
+
+    window.addEventListener('click', () => {
+        selectWrapper.classList.remove('open');
+    });
+
+    // --- FORM GÖNDERME KODU ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwGlJdfqXHW2CZ7F56UcSwJloUWdD9bNrWpBWJ3NvQBTUNXcaMke9U1FANJyBJuwUr0kw/exec';
+    const form = document.getElementById('google-sheet-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const fileInput = document.getElementById('file-input');
+    const fileText = document.querySelector('#file-text');
+
+    fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+            fileText.innerText = fileInput.files[0].name;
+        }
+    };
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        
+        if(!hiddenInput.value) {
+            alert("Lütfen bir ders seçiniz!");
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Gönderiliyor...";
+
+        const file = fileInput.files[0];
+        let fileData = { contents: null, mimeType: "", fileName: "" };
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                fileData.contents = reader.result.split(',')[1];
+                fileData.mimeType = file.type;
+                fileData.fileName = file.name;
+                submitForm(fileData);
+            };
+        } else {
+            submitForm(fileData);
+        }
+
+        async function submitForm(fData) {
+            const params = new URLSearchParams(new FormData(form));
+            const fullURL = `${scriptURL}?${params.toString()}`;
+
+            try {
+                await fetch(fullURL, {
+                    method: 'POST',
+                    body: JSON.stringify(fData)
+                });
+
+                submitBtn.innerText = "Başarıyla Gönderildi!";
+                submitBtn.style.background = "#27ae60";
+                form.reset();
+                trigger.textContent = "Ders Seçiniz";
+                hiddenInput.value = "";
+                fileText.innerText = "Dosya Seç veya Sürükle";
+                
+                setTimeout(() => {
+                    submitBtn.innerText = "Notu Gönder";
+                    submitBtn.style.background = "#6246ea";
+                    submitBtn.disabled = false;
+                }, 3000);
+            } catch (err) {
+                submitBtn.innerText = "Hata Oluştu!";
+                submitBtn.style.background = "#e74c3c";
+                submitBtn.disabled = false;
+            }
+        }
+    };
+</script>
 
 </body>
 </html>
