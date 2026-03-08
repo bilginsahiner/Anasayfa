@@ -287,6 +287,24 @@
             gap: 5px;
         }
 
+        /* --- İLERLEME ÇUBUĞU STİLİ --- */
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none; 
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #6246ea;
+            transition: width 0.3s ease;
+        }
+
         /* Ayet Baloncuğu */
         .verse-bubble {
             margin-top: 20px;
@@ -414,6 +432,10 @@
                     </div>
                 </div>
 
+                <div class="progress-container" id="p-container">
+                    <div class="progress-bar" id="p-bar"></div>
+                </div>
+
                 <button type="submit" class="submit-btn" id="submit-btn">Notu Gönder</button>
             </form>
         </div>
@@ -439,6 +461,8 @@
     const trigger = document.querySelector('.custom-select-trigger');
     const selectWrapper = document.getElementById('customSelect');
     const options = document.querySelectorAll('.custom-option');
+    const pContainer = document.getElementById('p-container');
+    const pBar = document.getElementById('p-bar');
 
     // --- ÖZEL SELECT KODU ---
     trigger.addEventListener('click', (e) => {
@@ -498,7 +522,6 @@
             fileName: ""
         };
 
-        // Eğer dosya seçildiyse Base64'e çevirip payload'a ekle
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -509,12 +532,23 @@
                 await sendToGoogle(payload);
             };
         } else {
-            // Dosya yoksa doğrudan gönder
             await sendToGoogle(payload);
         }
     };
 
     async function sendToGoogle(data) {
+        pContainer.style.display = 'block';
+        pBar.style.width = '0%';
+
+        // Yanıt gelene kadar barı kademeli doldur (Simülasyon)
+        let width = 0;
+        const loader = setInterval(() => {
+            if (width < 90) {
+                width += 2;
+                pBar.style.width = width + '%';
+            }
+        }, 150);
+
         try {
             await fetch(scriptURL, {
                 method: 'POST',
@@ -522,6 +556,9 @@
             });
 
             // Başarı Durumu
+            clearInterval(loader);
+            pBar.style.width = '100%'; // Son ana kadar doldu
+
             submitBtn.innerText = "Başarıyla Gönderildi!";
             submitBtn.style.background = "#27ae60";
             form.reset();
@@ -533,12 +570,15 @@
                 submitBtn.innerText = "Notu Gönder";
                 submitBtn.style.background = "#6246ea";
                 submitBtn.disabled = false;
+                pContainer.style.display = 'none'; // Çubuğu gizle
             }, 3000);
         } catch (err) {
+            clearInterval(loader);
             console.error(err);
             submitBtn.innerText = "Hata Oluştu!";
             submitBtn.style.background = "#e74c3c";
             submitBtn.disabled = false;
+            pContainer.style.display = 'none';
         }
     }
 </script>
