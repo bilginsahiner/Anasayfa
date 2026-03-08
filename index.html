@@ -33,6 +33,26 @@
             margin: auto;
         }
 
+        /* Instagram Uyarı Bandı */
+        .browser-warning {
+            display: none; 
+            background: rgba(98, 70, 234, 0.15);
+            border: 1px dashed #6246ea;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 0.85rem;
+            align-items: flex-start;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .browser-warning svg { color: #a29bfe; flex-shrink: 0; margin-top: 2px; }
+        .browser-warning strong { color: #ffffff; display: block; margin-bottom: 3px; }
+        .close-warning { cursor: pointer; opacity: 0.6; padding: 5px; font-size: 1.1rem; line-height: 1; }
+
         .welcome-section h1 {
             font-size: 1.8rem;
             color: #ffffff;
@@ -363,6 +383,19 @@
 <body>
 
 <div class="dashboard-container">
+    <div id="instagram-warning" class="browser-warning">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div style="flex: 1;">
+            <strong>En İyi Deneyim İçin</strong>
+            Siteden tam verim almak ve dosya yükleyebilmek için sağ üstteki <b>üç noktaya</b> tıklayıp <b>"Tarayıcıda Aç"</b> seçeneğini kullanın.
+        </div>
+        <div class="close-warning" onclick="this.parentElement.style.display='none'">✕</div>
+    </div>
+
     <header class="welcome-section">
         <h1>
             Hoş Geldin!
@@ -420,9 +453,9 @@
                     <label>Konu (Zorunlu)</label>
                     <div class="custom-select-wrapper" id="customSelect">
                         <div id="tooltip" class="tooltip-error">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-    <span>Lütfen ders seçiniz!</span>
-</div>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <span>Lütfen ders seçiniz!</span>
+                        </div>
                         <div class="custom-select-trigger" id="triggerBtn">Ders Seçiniz</div>
                         <div class="custom-options">
                             <div class="custom-option" data-value="Dinler Tarihi-II">Dinler Tarihi-II</div>
@@ -496,22 +529,25 @@
     const pBar = document.getElementById('p-bar');
     const tooltip = document.getElementById('tooltip');
 
+    // Instagram Kontrolü
+    if (navigator.userAgent.includes("Instagram")) {
+        document.getElementById('instagram-warning').style.display = 'flex';
+    }
+
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         selectWrapper.classList.toggle('open');
-        tooltip.classList.remove('show'); // Açınca uyarıyı gizle
+        tooltip.classList.remove('show'); 
     });
 
-        options.forEach(option => {
+    options.forEach(option => {
         option.addEventListener('click', function(e) {
             e.stopPropagation();
             const val = this.getAttribute('data-value');
             trigger.textContent = val;
             hiddenInput.value = val;
             
-            // --- EKLEMEN GEREKEN SATIR BURASI ---
             tooltip.classList.remove('show'); 
-            // ------------------------------------
 
             trigger.style.borderColor = 'rgba(255, 255, 255, 0.1)';
             options.forEach(opt => opt.classList.remove('selected'));
@@ -544,7 +580,7 @@
         if(!hiddenInput.value) {
             tooltip.classList.add('show');
             trigger.style.borderColor = '#6246ea';
-                        return;
+            return;
         }
 
         submitBtn.disabled = true;
