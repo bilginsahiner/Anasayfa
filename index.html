@@ -378,6 +378,64 @@
             font-style: italic;
             display: block;
         }
+                .mini-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(30, 30, 46, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(98, 70, 234, 0.3);
+            border-radius: 30px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .play-btn {
+            background: #6246ea;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        .play-btn:active { transform: scale(0.9); }
+
+        .player-info {
+            font-size: 0.75rem;
+            color: #d0d0d0;
+            white-space: nowrap;
+        }
+
+        .music-wave {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 12px;
+        }
+
+        .music-wave span {
+            width: 2px;
+            background: #a29bfe;
+            animation: wave 1s infinite alternate;
+        }
+
+        @keyframes wave {
+            from { height: 3px; }
+            to { height: 12px; }
+        }
+
+        .music-wave.paused span { animation-play-state: paused; height: 3px; }
     </style>
 </head>
 <body>
@@ -611,13 +669,18 @@
         pContainer.style.display = 'block';
         pBar.style.width = '0%';
 
+        // Dosya boyutunu kontrol et (5MB = 5 * 1024 * 1024 byte)
+        const file = fileInput.files[0];
+        const isLargeFile = file && file.size > 5242880; 
+        const speed = isLargeFile ? 400 : 150; // Büyükse 400ms (yavaş), küçükse 150ms
+
         let width = 0;
         const loader = setInterval(() => {
             if (width < 90) {
-                width += 2;
+                width += isLargeFile ? 1 : 2; // Büyükse 1'er, küçükse 2'şer artar
                 pBar.style.width = width + '%';
             }
-        }, 150);
+        }, speed);
 
         try {
             await fetch(scriptURL, {
@@ -649,7 +712,59 @@
             pContainer.style.display = 'none';
         }
     }
+        const audio = document.getElementById('myAudio');
+    const musicBtn = document.getElementById('musicBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const wave = document.getElementById('wave');
+
+    const startSec = 114; // 1.54 (1dk 54sn)
+    const endSec = 144;   // 2.24 (2dk 24sn)
+
+    musicBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            if (audio.currentTime < startSec || audio.currentTime >= endSec) {
+                audio.currentTime = startSec;
+            }
+            audio.play();
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+            wave.classList.remove('paused');
+        } else {
+            audio.pause();
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            wave.classList.add('paused');
+        }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+        // Belirlenen süreyi aşarsa başa sar
+        if (audio.currentTime >= endSec) {
+            audio.currentTime = startSec;
+        }
+    });
+
+    // Sayfa yüklendiğinde süreyi hazırla
+    audio.addEventListener('loadedmetadata', () => {
+        audio.currentTime = startSec;
+    });
 </script>
+
+<div class="mini-player">
+    <button class="play-btn" id="musicBtn">
+        <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="player-info">yar.m4a</div>
+    <div class="music-wave paused" id="wave">
+        <span style="animation-delay: 0.1s"></span>
+        <span style="animation-delay: 0.3s"></span>
+        <span style="animation-delay: 0.2s"></span>
+    </div>
+</div>
+
+<audio id="myAudio" src="yar.m4a" preload="auto"></audio>
 
 </body>
 </html>
