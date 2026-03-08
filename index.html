@@ -355,30 +355,7 @@
             transition: width 0.3s ease;
         }
 
-        .verse-bubble {
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .arabic-text {
-            font-size: 1.2rem;
-            color: #ffffff;
-            margin-bottom: 8px;
-            display: block;
-            direction: rtl;
-        }
-
-        .turkish-text {
-            font-size: 0.85rem;
-            color: #808080;
-            font-style: italic;
-            display: block;
-        }
-                .mini-player {
+        .mini-player {
             position: fixed;
             bottom: 20px;
             left: 20px;
@@ -472,7 +449,6 @@
                 </svg>
                 <span>Giriş</span>
             </a>
-
         </div>
 
         <div class="info-bubble">
@@ -549,26 +525,40 @@
         </div>
 
         <div class="btn-container" style="flex-direction: row; justify-content: center; gap: 8px; margin-top: 20px;">
-    <a href="https://www.instagram.com/bilginsahiner01" class="schedule-btn" target="_blank" style="padding: 6px 12px; font-size: 0.75rem; gap: 6px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-        </svg>
-        <span>Instagram</span>
-    </a>
+            <a href="https://www.instagram.com/bilginsahiner01" class="schedule-btn" target="_blank" style="padding: 6px 12px; font-size: 0.75rem; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span>Instagram</span>
+            </a>
 
-    <a href="mailto:bilginsahiner@gmail.com" class="schedule-btn" style="padding: 6px 12px; font-size: 0.75rem; gap: 6px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>
-        <span>E-posta</span>
-    </a>
-</div>
-
+            <a href="mailto:bilginsahiner@gmail.com" class="schedule-btn" style="padding: 6px 12px; font-size: 0.75rem; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span>E-posta</span>
+            </a>
+        </div>
     </header>
 </div>
+
+<div class="mini-player">
+    <button class="play-btn" id="musicBtn">
+        <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="player-info">Çağırsan gelmem mi?</div>
+    <div class="music-wave paused" id="wave">
+        <span style="animation-delay: 0.1s"></span>
+        <span style="animation-delay: 0.3s"></span>
+        <span style="animation-delay: 0.2s"></span>
+    </div>
+</div>
+
+<audio id="myAudio" src="yar.m4a" preload="auto"></audio>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzxdzHqmQRdAVneamaMZ_J-jc4GbK8t94GNTpoO_KLDtnX0aBsWNbGe0HL7ZzSw0cDt2A/exec';
@@ -669,15 +659,14 @@
         pContainer.style.display = 'block';
         pBar.style.width = '0%';
 
-        // Dosya boyutunu kontrol et (5MB = 5 * 1024 * 1024 byte)
         const file = fileInput.files[0];
         const isLargeFile = file && file.size > 5242880; 
-        const speed = isLargeFile ? 400 : 150; // Büyükse 400ms (yavaş), küçükse 150ms
+        const speed = isLargeFile ? 400 : 150; 
 
         let width = 0;
         const loader = setInterval(() => {
             if (width < 90) {
-                width += isLargeFile ? 1 : 2; // Büyükse 1'er, küçükse 2'şer artar
+                width += isLargeFile ? 1 : 2; 
                 pBar.style.width = width + '%';
             }
         }, speed);
@@ -712,17 +701,23 @@
             pContainer.style.display = 'none';
         }
     }
-        const audio = document.getElementById('myAudio');
+
+    // MÜZİK ÇALAR JAVASCRIPT
+    const audio = document.getElementById('myAudio');
     const musicBtn = document.getElementById('musicBtn');
     const playIcon = document.getElementById('playIcon');
     const pauseIcon = document.getElementById('pauseIcon');
     const wave = document.getElementById('wave');
 
-    const startSec = 114; // 1.54 (1dk 54sn)
-    const endSec = 144;   // 2.24 (2dk 24sn)
+    const startSec = 114; // 1:54
+    const endSec = 144;   // 2:24
+
+    // Başlangıç süresini ayarla
+    audio.currentTime = startSec;
 
     musicBtn.addEventListener('click', () => {
         if (audio.paused) {
+            // Eğer müzik aralık dışındaysa başa al
             if (audio.currentTime < startSec || audio.currentTime >= endSec) {
                 audio.currentTime = startSec;
             }
@@ -742,29 +737,17 @@
         // Belirlenen süreyi aşarsa başa sar
         if (audio.currentTime >= endSec) {
             audio.currentTime = startSec;
+            if (!audio.paused) audio.play();
         }
     });
 
-    // Sayfa yüklendiğinde süreyi hazırla
-    audio.addEventListener('loadedmetadata', () => {
-        audio.currentTime = startSec;
+    // Bazı tarayıcılar için süreyi hazırla
+    audio.addEventListener('canplay', () => {
+        if (audio.currentTime < startSec) {
+            audio.currentTime = startSec;
+        }
     });
 </script>
-
-<div class="mini-player">
-    <button class="play-btn" id="musicBtn">
-        <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="pauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </button>
-    <div class="player-info">yar.m4a</div>
-    <div class="music-wave paused" id="wave">
-        <span style="animation-delay: 0.1s"></span>
-        <span style="animation-delay: 0.3s"></span>
-        <span style="animation-delay: 0.2s"></span>
-    </div>
-</div>
-
-<audio id="myAudio" src="yar.m4a" preload="auto"></audio>
 
 </body>
 </html>
