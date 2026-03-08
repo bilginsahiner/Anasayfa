@@ -394,7 +394,7 @@
                 <div class="form-group">
                     <label>Dosya Ekle (Opsiyonel)</label>
                     <div class="file-input-container">
-                        <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx">
+                        <input type="file" id="file-input" accept="application/pdf,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                         <div class="custom-file-upload">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -463,7 +463,16 @@
 
     fileInput.onchange = () => {
         if (fileInput.files.length > 0) {
-            fileText.innerText = fileInput.files[0].name;
+            const file = fileInput.files[0];
+            const allowedExtensions = /(\.pdf|\.txt|\.doc|\.docx)$/i;
+            
+            if (!allowedExtensions.exec(file.name)) {
+                alert('Hata: Sadece PDF, TXT, DOC ve DOCX formatları kabul edilmektedir.');
+                fileInput.value = '';
+                fileText.innerText = "Dosya Seç veya Sürükle";
+                return false;
+            }
+            fileText.innerText = file.name;
         }
     };
 
