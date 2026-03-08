@@ -427,12 +427,20 @@
 </div>
 
 <script>
-    // --- ÖZEL SELECT KODU ---
-    const selectWrapper = document.getElementById('customSelect');
-    const trigger = selectWrapper.querySelector('.custom-select-trigger');
-    const options = selectWrapper.querySelectorAll('.custom-option');
-    const hiddenInput = document.getElementById('hiddenSubject');
+    // --- AYARLAR ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzxdzHqmQRdAVneamaMZ_J-jc4GbK8t94GNTpoO_KLDtnX0aBsWNbGe0HL7ZzSw0cDt2A/exec';
 
+    // --- ELEMENTLER ---
+    const form = document.getElementById('google-sheet-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const fileInput = document.getElementById('file-input');
+    const fileText = document.querySelector('#file-text');
+    const hiddenInput = document.getElementById('hiddenSubject');
+    const trigger = document.querySelector('.custom-select-trigger');
+    const selectWrapper = document.getElementById('customSelect');
+    const options = document.querySelectorAll('.custom-option');
+
+    // --- ÖZEL SELECT KODU ---
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         selectWrapper.classList.toggle('open');
@@ -454,28 +462,22 @@
         selectWrapper.classList.remove('open');
     });
 
-    // --- FORM GÖNDERME KODU ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwGlJdfqXHW2CZ7F56UcSwJloUWdD9bNrWpBWJ3NvQBTUNXcaMke9U1FANJyBJuwUr0kw/exec';
-    const form = document.getElementById('google-sheet-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const fileInput = document.getElementById('file-input');
-    const fileText = document.querySelector('#file-text');
-
+    // --- DOSYA SEÇİM KONTROLÜ ---
     fileInput.onchange = () => {
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
-            const allowedExtensions = /(\.pdf|\.txt|\.doc|\.docx)$/i;
-            
-            if (!allowedExtensions.exec(file.name)) {
-                alert('Hata: Sadece PDF, TXT, DOC ve DOCX formatları kabul edilmektedir.');
+            const allowed = /(\.pdf|\.txt|\.doc|\.docx)$/i;
+            if (!allowed.exec(file.name)) {
+                alert('Hata: Sadece PDF, TXT, DOC ve DOCX formatları kabul edilir.');
                 fileInput.value = '';
                 fileText.innerText = "Dosya Seç veya Sürükle";
-                return false;
+                return;
             }
             fileText.innerText = file.name;
         }
     };
 
+    // --- FORM GÖNDERME İŞLEMİ (GÜNCEL) ---
     form.onsubmit = async (e) => {
         e.preventDefault();
         
@@ -488,50 +490,57 @@
         submitBtn.innerText = "Gönderiliyor...";
 
         const file = fileInput.files[0];
-        let fileData = { contents: null, mimeType: "", fileName: "" };
+        let payload = {
+            subject: hiddenInput.value,
+            message: form.message.value,
+            contents: null,
+            mimeType: "",
+            fileName: ""
+        };
 
+        // Eğer dosya seçildiyse Base64'e çevirip payload'a ekle
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => {
-                fileData.contents = reader.result.split(',')[1];
-                fileData.mimeType = file.type;
-                fileData.fileName = file.name;
-                submitForm(fileData);
+            reader.onload = async () => {
+                payload.contents = reader.result.split(',')[1];
+                payload.mimeType = file.type;
+                payload.fileName = file.name;
+                await sendToGoogle(payload);
             };
         } else {
-            submitForm(fileData);
-        }
-
-        async function submitForm(fData) {
-            const params = new URLSearchParams(new FormData(form));
-            const fullURL = `${scriptURL}?${params.toString()}`;
-
-            try {
-                await fetch(fullURL, {
-                    method: 'POST',
-                    body: JSON.stringify(fData)
-                });
-
-                submitBtn.innerText = "Başarıyla Gönderildi!";
-                submitBtn.style.background = "#27ae60";
-                form.reset();
-                trigger.textContent = "Ders Seçiniz";
-                hiddenInput.value = "";
-                fileText.innerText = "Dosya Seç veya Sürükle";
-                
-                setTimeout(() => {
-                    submitBtn.innerText = "Notu Gönder";
-                    submitBtn.style.background = "#6246ea";
-                    submitBtn.disabled = false;
-                }, 3000);
-            } catch (err) {
-                submitBtn.innerText = "Hata Oluştu!";
-                submitBtn.style.background = "#e74c3c";
-                submitBtn.disabled = false;
-            }
+            // Dosya yoksa doğrudan gönder
+            await sendToGoogle(payload);
         }
     };
+
+    async function sendToGoogle(data) {
+        try {
+            await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            // Başarı Durumu
+            submitBtn.innerText = "Başarıyla Gönderildi!";
+            submitBtn.style.background = "#27ae60";
+            form.reset();
+            trigger.textContent = "Ders Seçiniz";
+            hiddenInput.value = "";
+            fileText.innerText = "Dosya Seç veya Sürükle";
+            
+            setTimeout(() => {
+                submitBtn.innerText = "Notu Gönder";
+                submitBtn.style.background = "#6246ea";
+                submitBtn.disabled = false;
+            }, 3000);
+        } catch (err) {
+            console.error(err);
+            submitBtn.innerText = "Hata Oluştu!";
+            submitBtn.style.background = "#e74c3c";
+            submitBtn.disabled = false;
+        }
+    }
 </script>
 
 </body>
