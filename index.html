@@ -305,6 +305,15 @@
             transition: width 0.3s ease;
         }
 
+        /* --- HATA MESAJI STİLİ --- */
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            display: none;
+            padding-left: 4px;
+        }
+
         /* Ayet Baloncuğu */
         .verse-bubble {
             margin-top: 20px;
@@ -402,6 +411,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="subject" id="hiddenSubject" required>
+                    <div id="subject-error" class="error-msg">Lütfen bir ders seçiniz!</div>
                 </div>
                 
                 <div class="form-group">
@@ -463,6 +473,7 @@
     const options = document.querySelectorAll('.custom-option');
     const pContainer = document.getElementById('p-container');
     const pBar = document.getElementById('p-bar');
+    const subjectError = document.getElementById('subject-error');
 
     // --- ÖZEL SELECT KODU ---
     trigger.addEventListener('click', (e) => {
@@ -476,6 +487,11 @@
             const val = this.getAttribute('data-value');
             trigger.textContent = val;
             hiddenInput.value = val;
+            
+            // Seçim yapıldığında hatayı temizle
+            subjectError.style.display = 'none';
+            trigger.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+
             options.forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
             selectWrapper.classList.remove('open');
@@ -506,7 +522,9 @@
         e.preventDefault();
         
         if(!hiddenInput.value) {
-            alert("Lütfen bir ders seçiniz!");
+            // Klasik alert yerine yerleşik hata mesajını göster
+            subjectError.style.display = 'block';
+            trigger.style.borderColor = '#ff4d4d';
             return;
         }
 
