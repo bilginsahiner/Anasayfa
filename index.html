@@ -550,7 +550,7 @@
         <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         <svg id="pauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </button>
-    <div class="player-info">Çağırsan gelmem mi?</div>
+    <div class="player-info">Yaramızda Kalsın 🎙</div>
     <div class="music-wave paused" id="wave">
         <span style="animation-delay: 0.1s"></span>
         <span style="animation-delay: 0.3s"></span>
@@ -558,7 +558,7 @@
     </div>
 </div>
 
-<audio id="myAudio" src="yar.m4a" preload="auto"></audio>
+<audio id="myAudio" src="Yaramızda Kalsın.mp3" preload="auto" loop></audio>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzxdzHqmQRdAVneamaMZ_J-jc4GbK8t94GNTpoO_KLDtnX0aBsWNbGe0HL7ZzSw0cDt2A/exec';
@@ -709,18 +709,8 @@
     const pauseIcon = document.getElementById('pauseIcon');
     const wave = document.getElementById('wave');
 
-    const startSec = 114; // 1:54
-    const endSec = 144;   // 2:24
-
-    // Başlangıç süresini ayarla
-    audio.currentTime = startSec;
-
     musicBtn.addEventListener('click', () => {
         if (audio.paused) {
-            // Eğer müzik aralık dışındaysa başa al
-            if (audio.currentTime < startSec || audio.currentTime >= endSec) {
-                audio.currentTime = startSec;
-            }
             audio.play();
             playIcon.style.display = 'none';
             pauseIcon.style.display = 'block';
@@ -733,20 +723,6 @@
         }
     });
 
-    audio.addEventListener('timeupdate', () => {
-        // Belirlenen süreyi aşarsa başa sar
-        if (audio.currentTime >= endSec) {
-            audio.currentTime = startSec;
-            if (!audio.paused) audio.play();
-        }
-    });
-
-    // Bazı tarayıcılar için süreyi hazırla
-    audio.addEventListener('canplay', () => {
-        if (audio.currentTime < startSec) {
-            audio.currentTime = startSec;
-        }
-    });
 </script>
 
 </body>
