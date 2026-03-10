@@ -1,0 +1,20 @@
+{
+  "name": "Bilgin Şahiner Dashboard",
+  "short_name": "Bilgin",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#6246ea",
+  "icons": [
+    {
+      "src": "ikon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "ikon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
