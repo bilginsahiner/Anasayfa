@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="ikon.png">
     
     <style>
-        /* TEMA DEĞİŞKENLERİ - YENİ EKLENDİ */
+        /* TEMA DEĞİŞKENLERİ */
         :root {
             --bg-color: #121212;
             --text-main: #e0e0e0;
@@ -26,7 +26,7 @@
             --player-bg: rgba(30, 30, 46, 0.8);
         }
 
-        /* AYDINLIK TEMA AYARLARI - YENİ EKLENDİ */
+        /* AYDINLIK TEMA AYARLARI */
         @media (prefers-color-scheme: light) {
             :root {
                 --bg-color: #f5f6fa;
@@ -69,9 +69,9 @@
 
         body {
             margin: 0;
-            background-color: var(--bg-color); /* DEĞİŞTİ: Sabit renk yerine değişken */
+            background-color: var(--bg-color);
             font-family: 'Segoe UI', sans-serif;
-            color: var(--text-main); /* DEĞİŞTİ: Sabit renk yerine değişken */
+            color: var(--text-main);
             padding-bottom: 50px; 
             transition: background-color 0.3s ease, color 0.3s ease;
         }
@@ -82,7 +82,6 @@
             margin: auto;
         }
 
-        /* Instagram Uyarı Bandı */
         .browser-warning {
             display: none; 
             background: rgba(98, 70, 234, 0.15);
@@ -90,7 +89,7 @@
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 15px;
-            color: var(--text-heading); /* DEĞİŞTİ */
+            color: var(--text-heading);
             font-size: 0.85rem;
             align-items: flex-start;
             gap: 12px;
@@ -104,20 +103,20 @@
 
         .welcome-section h1 {
             font-size: 1.8rem;
-            color: var(--text-heading); /* DEĞİŞTİ */
+            color: var(--text-heading);
             margin-bottom: 5px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .moon-icon {
-            width: 24px;
-            height: 24px;
-            color: #6246ea;
-            transform: scaleX(-1) rotate(10deg);
-            filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.4));
-        }
+        .status-icon-svg {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 
         .welcome-section p { color: var(--text-main); opacity: 0.8; margin-top: 0; }
 
@@ -133,7 +132,7 @@
             align-items: center;
             gap: 12px;
             background: rgba(98, 70, 234, 0.1);
-            color: var(--text-heading); /* DEĞİŞTİ */
+            color: var(--text-heading);
             text-decoration: none;
             padding: 10px 22px;
             border-radius: 50px;
@@ -156,27 +155,27 @@
 
         .info-bubble {
             margin-top: 30px;
-            background: var(--bubble-bg); /* DEĞİŞTİ */
+            background: var(--bubble-bg);
             border-left: 4px solid #6246ea;
             padding: 15px;
             border-radius: 12px;
             font-size: 0.9rem;
             line-height: 1.5;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
         }
 
         .info-bubble strong {
-            color: var(--text-heading); /* DEĞİŞTİ */
+            color: var(--text-heading);
             display: block;
             margin-bottom: 5px;
         }
 
         .contact-form {
             margin-top: 25px;
-            background: var(--card-bg); /* DEĞİŞTİ */
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 18px;
-            border: 1px solid var(--card-border); /* DEĞİŞTİ */
+            border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
@@ -184,7 +183,7 @@
         .contact-form h3 {
             font-size: 1.1rem;
             margin-bottom: 20px;
-            color: var(--text-heading); /* DEĞİŞTİ */
+            color: var(--text-heading);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -195,7 +194,7 @@
         .form-group label {
             display: block;
             font-size: 0.8rem;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
             margin-bottom: 8px;
             padding-left: 4px;
         }
@@ -208,10 +207,10 @@
         .custom-select-trigger {
             width: 100%;
             padding: 14px;
-            background: var(--input-bg); /* DEĞİŞTİ */
-            border: 1px solid var(--input-border); /* DEĞİŞTİ */
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 12px;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
             font-size: 0.95rem;
             cursor: pointer;
             display: flex;
@@ -241,7 +240,7 @@
             top: calc(100% + 5px);
             left: 0;
             right: 0;
-            background: var(--player-bg); /* DEĞİŞTİ */
+            background: var(--player-bg);
             border: 1px solid rgba(98, 70, 234, 0.3);
             border-radius: 12px;
             z-index: 100;
@@ -257,10 +256,10 @@
 
         .custom-option {
             padding: 12px 15px;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
             cursor: pointer;
             font-size: 0.9rem;
-            border-bottom: 1px solid var(--input-border); /* DEĞİŞTİ */
+            border-bottom: 1px solid var(--input-border);
             transition: background 0.2s;
         }
 
@@ -314,10 +313,10 @@
         .form-group textarea {
             width: 100%;
             padding: 14px;
-            background: var(--input-bg); /* DEĞİŞTİ */
-            border: 1px solid var(--input-border); /* DEĞİŞTİ */
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 12px;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
             font-family: inherit;
             font-size: 0.95rem;
             box-sizing: border-box;
@@ -409,7 +408,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: var(--player-bg); /* DEĞİŞTİ */
+            background: var(--player-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(98, 70, 234, 0.3);
@@ -440,7 +439,7 @@
 
         .player-info {
             font-size: 0.75rem;
-            color: var(--text-main); /* DEĞİŞTİ */
+            color: var(--text-main);
             white-space: nowrap;
         }
 
@@ -485,9 +484,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <h1 style="margin: 0;">
                 Hoş Geldin!
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
+                <span id="dynamic-status-icon"></span>
             </h1>
             <div style="width: 50px; height: 50px; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.2));">
                 <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
@@ -644,6 +641,38 @@
     const pContainer = document.getElementById('p-container');
     const pBar = document.getElementById('p-bar');
     const tooltip = document.getElementById('tooltip');
+
+    // DİNAMİK İKON FONKSİYONU
+        function updateStatusIcon() {
+        const hour = new Date().getHours();
+        const iconContainer = document.getElementById('dynamic-status-icon');
+        let iconSvg = '';
+
+        // Boyut 24px ve Çizgi Kalınlığı 1.5 olarak güncellendi
+        const sunIcon = `<svg class="status-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.4))"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+        
+        const sunsetIcon = `<svg class="status-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.4))"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="2" x2="12" y2="9"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line><line x1="23" y1="22" x2="1" y2="22"></line><polyline points="8 6 12 2 16 6"></polyline></svg>`;
+        
+        const moonIcon = `<svg class="status-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6246ea" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform: scaleX(-1) rotate(10deg); filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.4))"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+        
+        const sunriseIcon = `<svg class="status-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f39c12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.4))"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="9" x2="12" y2="2"></line><line x1="4.22" y1="11.64" x2="5.64" y2="10.22"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="10.22" x2="19.78" y2="11.64"></line><line x1="23" y1="22" x2="1" y2="22"></line><polyline points="16 5 12 9 8 5"></polyline></svg>`;
+
+        if (hour >= 9 && hour < 15) {
+            iconSvg = sunIcon;
+        } else if (hour >= 15 && hour < 17) {
+            iconSvg = sunsetIcon;
+        } else if (hour >= 17 || hour < 5) {
+            iconSvg = moonIcon;
+        } else if (hour >= 5 && hour < 9) {
+            iconSvg = sunriseIcon;
+        }
+
+        iconContainer.innerHTML = iconSvg;
+    }
+
+    // Başlat ve periyodik kontrol et
+    updateStatusIcon();
+    setInterval(updateStatusIcon, 60000);
 
     // Instagram Kontrolü
     if (navigator.userAgent.includes("Instagram")) {
