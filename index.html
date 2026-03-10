@@ -13,25 +13,53 @@
     <link rel="apple-touch-icon" href="ikon.png">
     
     <style>
-    /* Logo Stili */
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 5px;
-}
+        /* TEMA DEĞİŞKENLERİ - YENİ EKLENDİ */
+        :root {
+            --bg-color: #121212;
+            --text-main: #e0e0e0;
+            --text-heading: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(98, 70, 234, 0.15);
+            --input-bg: rgba(0, 0, 0, 0.25);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --bubble-bg: rgba(255, 255, 255, 0.05);
+            --player-bg: rgba(30, 30, 46, 0.8);
+        }
 
-.uni-logo-svg {
-    width: 60px; /* Boyutu buradan ayarlayabilirsin */
-    height: auto;
-    filter: drop-shadow(0 0 8px rgba(211, 17, 39, 0.2));
-}
+        /* AYDINLIK TEMA AYARLARI - YENİ EKLENDİ */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f5f6fa;
+                --text-main: #4a4a4a;
+                --text-heading: #1a1a1a;
+                --card-bg: #ffffff;
+                --card-border: rgba(98, 70, 234, 0.2);
+                --input-bg: #fdfdfd;
+                --input-border: rgba(0, 0, 0, 0.1);
+                --bubble-bg: #ececf3;
+                --player-bg: rgba(255, 255, 255, 0.9);
+            }
+        }
 
-@media (max-width: 400px) {
-    .uni-logo-svg {
-        width: 50px;
-    }
-}
+        /* Logo Stili */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .uni-logo-svg {
+            width: 60px;
+            height: auto;
+            filter: drop-shadow(0 0 8px rgba(211, 17, 39, 0.2));
+        }
+
+        @media (max-width: 400px) {
+            .uni-logo-svg {
+                width: 50px;
+            }
+        }
 
         * {
             -webkit-tap-highlight-color: transparent;
@@ -41,10 +69,11 @@
 
         body {
             margin: 0;
-            background-color: #121212;
+            background-color: var(--bg-color); /* DEĞİŞTİ: Sabit renk yerine değişken */
             font-family: 'Segoe UI', sans-serif;
-            color: #e0e0e0;
+            color: var(--text-main); /* DEĞİŞTİ: Sabit renk yerine değişken */
             padding-bottom: 50px; 
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .dashboard-container {
@@ -61,7 +90,7 @@
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 15px;
-            color: #ffffff;
+            color: var(--text-heading); /* DEĞİŞTİ */
             font-size: 0.85rem;
             align-items: flex-start;
             gap: 12px;
@@ -70,12 +99,12 @@
             position: relative;
         }
         .browser-warning svg { color: #a29bfe; flex-shrink: 0; margin-top: 2px; }
-        .browser-warning strong { color: #ffffff; display: block; margin-bottom: 3px; }
+        .browser-warning strong { color: var(--text-heading); display: block; margin-bottom: 3px; }
         .close-warning { cursor: pointer; opacity: 0.6; padding: 5px; font-size: 1.1rem; line-height: 1; }
 
         .welcome-section h1 {
             font-size: 1.8rem;
-            color: #ffffff;
+            color: var(--text-heading); /* DEĞİŞTİ */
             margin-bottom: 5px;
             display: flex;
             align-items: center;
@@ -90,7 +119,7 @@
             filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.4));
         }
 
-        .welcome-section p { color: #a0a0a0; margin-top: 0; }
+        .welcome-section p { color: var(--text-main); opacity: 0.8; margin-top: 0; }
 
         .btn-container { 
             margin-top: 25px; 
@@ -104,7 +133,7 @@
             align-items: center;
             gap: 12px;
             background: rgba(98, 70, 234, 0.1);
-            color: #ffffff;
+            color: var(--text-heading); /* DEĞİŞTİ */
             text-decoration: none;
             padding: 10px 22px;
             border-radius: 50px;
@@ -127,34 +156,35 @@
 
         .info-bubble {
             margin-top: 30px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bubble-bg); /* DEĞİŞTİ */
             border-left: 4px solid #6246ea;
             padding: 15px;
             border-radius: 12px;
             font-size: 0.9rem;
             line-height: 1.5;
-            color: #d0d0d0;
+            color: var(--text-main); /* DEĞİŞTİ */
         }
 
         .info-bubble strong {
-            color: #ffffff;
+            color: var(--text-heading); /* DEĞİŞTİ */
             display: block;
             margin-bottom: 5px;
         }
 
         .contact-form {
             margin-top: 25px;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--card-bg); /* DEĞİŞTİ */
             padding: 20px;
             border-radius: 18px;
-            border: 1px solid rgba(98, 70, 234, 0.15);
+            border: 1px solid var(--card-border); /* DEĞİŞTİ */
             backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         .contact-form h3 {
             font-size: 1.1rem;
             margin-bottom: 20px;
-            color: #ffffff;
+            color: var(--text-heading); /* DEĞİŞTİ */
             display: flex;
             align-items: center;
             gap: 10px;
@@ -165,7 +195,7 @@
         .form-group label {
             display: block;
             font-size: 0.8rem;
-            color: #b0b0b0;
+            color: var(--text-main); /* DEĞİŞTİ */
             margin-bottom: 8px;
             padding-left: 4px;
         }
@@ -178,10 +208,10 @@
         .custom-select-trigger {
             width: 100%;
             padding: 14px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--input-bg); /* DEĞİŞTİ */
+            border: 1px solid var(--input-border); /* DEĞİŞTİ */
             border-radius: 12px;
-            color: #fff;
+            color: var(--text-main); /* DEĞİŞTİ */
             font-size: 0.95rem;
             cursor: pointer;
             display: flex;
@@ -211,14 +241,14 @@
             top: calc(100% + 5px);
             left: 0;
             right: 0;
-            background: #1e1e2e;
+            background: var(--player-bg); /* DEĞİŞTİ */
             border: 1px solid rgba(98, 70, 234, 0.3);
             border-radius: 12px;
             z-index: 100;
             display: none;
             max-height: 250px;
             overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .custom-select-wrapper.open .custom-options {
@@ -227,10 +257,10 @@
 
         .custom-option {
             padding: 12px 15px;
-            color: #d0d0d0;
+            color: var(--text-main); /* DEĞİŞTİ */
             cursor: pointer;
             font-size: 0.9rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--input-border); /* DEĞİŞTİ */
             transition: background 0.2s;
         }
 
@@ -284,10 +314,10 @@
         .form-group textarea {
             width: 100%;
             padding: 14px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--input-bg); /* DEĞİŞTİ */
+            border: 1px solid var(--input-border); /* DEĞİŞTİ */
             border-radius: 12px;
-            color: #fff;
+            color: var(--text-main); /* DEĞİŞTİ */
             font-family: inherit;
             font-size: 0.95rem;
             box-sizing: border-box;
@@ -379,7 +409,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background: rgba(30, 30, 46, 0.8);
+            background: var(--player-bg); /* DEĞİŞTİ */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(98, 70, 234, 0.3);
@@ -389,7 +419,7 @@
             align-items: center;
             gap: 10px;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .play-btn {
@@ -410,7 +440,7 @@
 
         .player-info {
             font-size: 0.75rem;
-            color: #d0d0d0;
+            color: var(--text-main); /* DEĞİŞTİ */
             white-space: nowrap;
         }
 
