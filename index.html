@@ -645,10 +645,25 @@
     updateStatusIcon();
     setInterval(updateStatusIcon, 60000);
 
-    // Instagram Kontrolü
-    if (navigator.userAgent.includes("Instagram")) {
-        document.getElementById('instagram-warning').style.display = 'flex';
-    }
+    // Instagram Kontrolü ve 5 Saniye Sonra Otomatik Kapanma
+const warningBox = document.getElementById('instagram-warning');
+
+if (navigator.userAgent.includes("Instagram")) {
+    warningBox.style.display = 'flex';
+    
+    // 5000 milisaniye (5 saniye) bekle
+    setTimeout(() => {
+        // Yumuşakça kaybolması için geçiş efekti
+        warningBox.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        warningBox.style.opacity = "0";
+        warningBox.style.transform = "translateY(-10px)"; // Hafif yukarı kayarak gider
+        
+        // Görünmez olduktan sonra alanı tamamen kapat
+        setTimeout(() => {
+            warningBox.style.display = 'none';
+        }, 600);
+    }, 5000);
+}
 
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
