@@ -391,23 +391,81 @@
             transition: width 0.3s ease;
         }
 
-        .mini-player {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: var(--player-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(98, 70, 234, 0.3);
-            border-radius: 30px;
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
+        /* Ana Çalar Konteynırı (Buna dokunmadık, sadece overflow ekledik) */
+.mini-player {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: var(--player-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(98, 70, 234, 0.3);
+    border-radius: 30px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    
+    /* YENİ: İçerideki bulanık objenin dışarı taşmaması için */
+    overflow: hidden; 
+}
 
+/* Efekt Konteynırı (Arka planda kalması için) */
+.water-effect-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Butonların arkasına atar */
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+/* Tek bir gökyüzü parçacığı */
+.particle {
+    position: absolute;
+    width: 4px; /* Küçük parçacıklar */
+    height: 4px;
+    background: rgba(135, 206, 235, 0.7); /* Gökyüzü mavisi, şeffaf */
+    border-radius: 50%;
+    filter: blur(1px); /* Hafif bulanıklık */
+    opacity: 0;
+    animation: particle-move 3s linear; /* 3 saniyelik hareket */
+}
+
+/* Parçacık Hareket Animasyonu */
+@keyframes particle-move {
+    0% {
+        opacity: 0;
+        transform: translate(var(--start-x), var(--start-y)) scale(0.5);
+    }
+    10% {
+        opacity: 1; /* Belirsin */
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+    }
+    50% {
+        /* Ortada buluşma noktası */
+        opacity: 1;
+        transform: translate(calc(var(--start-x) + (var(--end-x) - var(--start-x)) / 2), calc(var(--start-y) + (var(--end-y) - var(--start-y)) / 2)) scale(1.2);
+    }
+    90% {
+        opacity: 0.5; /* Dağılmaya başlasın */
+        transform: translate(var(--end-x), var(--end-y)) scale(1.5);
+    }
+    100% {
+        opacity: 0; /* Tamamen kaybolsun */
+        transform: translate(var(--end-x), var(--end-y)) scale(2); /* Dağılma efekti */
+    }
+}
+
+
+/* Müzik durduğunda animasyonu durdurmak için (Opsiyonel) */
+.mini-player.paused .water-blob {
+    animation-play-state: paused;
+}
         .play-btn {
             background: #6246ea;
             border: none;
@@ -583,7 +641,9 @@
     </header>
 </div>
 
-<div class="mini-player">
+<div class="mini-player" id="playerContainer">
+    <div class="water-effect-container" id="particle-container"></div>
+    
     <button class="play-btn" id="musicBtn">
         <svg id="playIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         <svg id="pauseIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
@@ -794,19 +854,68 @@ if (navigator.userAgent.includes("Instagram")) {
     const pauseIcon = document.getElementById('pauseIcon');
     const wave = document.getElementById('wave');
 
-    musicBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'block';
-            wave.classList.remove('paused');
-        } else {
-            audio.pause();
-            playIcon.style.display = 'block';
-            pauseIcon.style.display = 'none';
-            wave.classList.add('paused');
-        }
+    // JavaScript kısmındaki mevcut musicBtn dinleyicisini bununla değiştir
+musicBtn.addEventListener('click', () => {
+    const playerContainer = document.getElementById('playerContainer');
+    
+    if (audio.paused) {
+        audio.play();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        wave.classList.remove('paused');
+        playerContainer.classList.remove('paused');
+        startParticleEffect(); // Efekti başlattık
+    } else {
+        audio.pause();
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+        wave.classList.add('paused');
+        playerContainer.classList.add('paused');
+        stopParticleEffect(); // Efekti durdurduk
+    }
+});
+
+// --- YENİ PARÇACIK EFEKTİ MANTIĞI ---
+const particleContainer = document.getElementById('particle-container');
+let particleInterval = null;
+
+function createParticle() {
+    if (!particleContainer) return;
+    const startFromLeft = Math.random() > 0.5;
+    const startX = startFromLeft ? -10 : particleContainer.offsetWidth + 10;
+    const startY = Math.random() * particleContainer.offsetHeight;
+    const endX = particleContainer.offsetWidth / 2;
+    const endY = Math.random() * particleContainer.offsetHeight;
+
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.setProperty('--start-x', startX + 'px');
+    particle.style.setProperty('--start-y', startY + 'px');
+    particle.style.setProperty('--end-x', endX + 'px');
+    particle.style.setProperty('--end-y', endY + 'px');
+
+    const blueHue = 190 + Math.random() * 30;
+    particle.style.background = `hsla(${blueHue}, 70%, 70%, 0.7)`;
+    particleContainer.appendChild(particle);
+
+    particle.addEventListener('animationend', () => {
+        particle.remove();
     });
+}
+
+function startParticleEffect() {
+    if (!particleInterval) {
+        particleInterval = setInterval(createParticle, 200);
+    }
+}
+
+function stopParticleEffect() {
+    if (particleInterval) {
+        clearInterval(particleInterval);
+        particleInterval = null;
+    }
+}
+// --- PARÇACIK MANTIĞI BİTTİ ---
 
 </script>
 
