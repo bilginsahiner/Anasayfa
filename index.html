@@ -47,25 +47,6 @@
             }
         }
 
-        /* Logo Stili */
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 5px;
-        }
-
-        .uni-logo-svg {
-            width: 60px;
-            height: auto;
-            filter: drop-shadow(0 0 8px rgba(211, 17, 39, 0.2));
-        }
-
-        @media (max-width: 400px) {
-            .uni-logo-svg {
-                width: 50px;
-            }
-        }
 
         * {
             -webkit-tap-highlight-color: transparent;
@@ -487,28 +468,12 @@
     </div>
 
         <header class="welcome-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div style="margin-bottom: 15px;">
             <h1 style="margin: 0;">
                 Hoş Geldin!
                 <span id="dynamic-status-icon"></span>
             </h1>
-            <div style="width: 50px; height: 50px; flex-shrink: 0; filter: drop-shadow(0 0 5px rgba(98, 70, 234, 0.2));">
-                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="250" cy="250" r="240" fill="#6246ea" />
-                    <circle cx="250" cy="250" r="190" fill="white" />
-                    <g fill="#6246ea">
-                        <circle cx="250" cy="210" r="85" />
-                        <path d="M250 350 L100 230 L100 400 Q250 480 400 400 L400 230 Z" />
-                        <rect x="90" y="305" width="320" height="12" fill="white" />
-                        <rect x="90" y="335" width="320" height="12" fill="white" />
-                        <rect x="90" y="365" width="320" height="12" fill="white" />
-                    </g>
-                    <path id="yearPath" d="M150,420 Q250,490 350,420" fill="none" />
-                    <text fill="white" font-family="Arial" font-size="42" font-weight="bold">
-                        <textPath href="#yearPath" startOffset="50%" text-anchor="middle">2008</textPath>
-                    </text>
-                </svg>
-            </div>
+            
         </div>
         <p>Günün özetine göz atabilirsin.</p>
 
