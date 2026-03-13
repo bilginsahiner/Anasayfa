@@ -1,6 +1,6 @@
 {
   "name": "Lesson App",
-  "short_name": iLesson",
+  "short_name": "iLesson",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#121212",
