@@ -466,9 +466,9 @@
 .mini-player.paused .water-blob {
     animation-play-state: paused;
 }
-        .play-btn {
-            background: #6246ea;
-            border: none;
+                .play-btn {
+            background: rgba(98, 70, 234, 0.15); /* Mor rengi %15 görünürlüğe çektik */
+            border: 1px solid rgba(98, 70, 234, 0.3); /* Butonun sınırları belli olsun diye hafif bir çerçeve ekledik */
             width: 28px;
             height: 28px;
             border-radius: 50%;
@@ -476,8 +476,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: white;
-            transition: transform 0.2s;
+            color: white; /* İkonların görünür kalması için beyaz bıraktık */
+            transition: transform 0.2s, background 0.3s;
+            backdrop-filter: blur(2px); /* Butonun içinden geçen parçacıkları hafifçe yumuşatmak için opsiyonel */
+            -webkit-backdrop-filter: blur(2px);
         }
 
         .play-btn:active { transform: scale(0.9); }
