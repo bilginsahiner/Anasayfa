@@ -896,9 +896,13 @@ function createParticle() {
     particle.style.setProperty('--end-x', endX + 'px');
     particle.style.setProperty('--end-y', endY + 'px');
 
-    // 0 ile 20 arası (Kırmızı ve Turuncu-Kırmızı tonları)
-const redHue = Math.random() * 20; 
-particle.style.background = `hsla(${redHue}, 80%, 65%, 0.7)`;
+    // --- TÜM RENKLERİ KAPSAYAN DİNAMİK RENK MANTIĞI ---
+    // 0 ile 360 arası rastgele bir açı seçer (Tüm renk paleti)
+    const randomHue = Math.floor(Math.random() * 360); 
+    // hsl(Renk, Doygunluk, Parlaklık, Opaklık)
+    particle.style.background = `hsla(${randomHue}, 90%, 60%, 0.8)`;
+    // --------------------------------------------------
+
     particleContainer.appendChild(particle);
 
     particle.addEventListener('animationend', () => {
