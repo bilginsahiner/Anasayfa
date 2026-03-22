@@ -392,24 +392,36 @@
         }
 
         /* Ana Çalar Konteynırı (Buna dokunmadık, sadece overflow ekledik) */
+/* Ana Çalar Konteynırı */
 .mini-player {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    background: var(--player-bg);
+    /* Arka plan resmi eklendi */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('x.jpg');
+    background-size: cover;
+    background-position: center;
+    
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(98, 70, 234, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Resim üzerinde daha şık durması için beyazımsı border */
     border-radius: 30px;
     padding: 8px 15px;
     display: flex;
     align-items: center;
     gap: 10px;
     z-index: 1000;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    
-    /* YENİ: İçerideki bulanık objenin dışarı taşmaması için */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     overflow: hidden; 
+}
+
+/* Resim üzerinde yazıların daha net okunması için */
+.player-info {
+    font-size: 0.75rem;
+    color: #ffffff; /* Yazıyı beyaza sabitledik */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    font-weight: 500;
 }
 
 /* Efekt Konteynırı (Arka planda kalması için) */
