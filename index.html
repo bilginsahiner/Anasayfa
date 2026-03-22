@@ -510,19 +510,6 @@
 
         .music-wave.paused span { animation-play-state: paused; height: 3px; }
         
-        /* Resimli arka plan sınıfı */
-.mini-player.with-bg {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('x.jpg');
-    background-size: cover;
-    background-position: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Resim varken yazıların okunması için */
-.mini-player.with-bg .player-info {
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
     </style>
 </head>
 <body>
@@ -937,25 +924,6 @@ function stopParticleEffect() {
     }
 }
 // --- PARÇACIK MANTIĞI BİTTİ ---
-
-// --- ARKA PLAN SÜRE KONTROLÜ ---
-function checkPlayerBackground() {
-    const player = document.getElementById('playerContainer');
-    
-    // Bitiş Tarihi: Bugün + 4 gün (Saat 23:59:59'a kadar)
-    // 22 Mart'ta olduğumuzu varsayarsak, 26 Mart son gün olur.
-    const endDate = new Date('2026-03-26T23:59:59'); 
-    const now = new Date();
-
-    if (now <= endDate) {
-        player.classList.add('with-bg');
-    } else {
-        player.classList.remove('with-bg');
-    }
-}
-
-// Sayfa yüklendiğinde çalıştır
-checkPlayerBackground();
 
 </script>
 
