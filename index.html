@@ -539,18 +539,34 @@
 <!-- GÖNDERİ AKIŞI BAŞLANGICI -->
 <div class="post-card" style="margin: 25px 0; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); padding: 20px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
     
-    <!-- Üst Kısım: Profil ve Tarih -->
+    <!-- Üst Kısım: Profil, Mavi Tik ve Tarih -->
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-        <!-- Profil Alanı (Resim yüklenmezse ikona döner) -->
+        <!-- Profil Alanı (profil.jpg yüklenmezse otomatik şık SVG ikona döner) -->
         <div id="profileImageContainer" style="width: 42px; height: 42px; border-radius: 50%; background: rgba(98, 70, 234, 0.15); border: 1px solid rgba(98, 70, 234, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: 0 0 10px rgba(98, 70, 234, 0.15);">
             <img src="profil.jpg" alt="Profil" id="userProfilePic" style="width: 100%; height: 100%; object-fit: cover;" onerror="handleProfileImageError()">
         </div>
         
-        <!-- İsim ve Tarih Alanı -->
-        <div style="display: flex; flex-direction: column; gap: 2px;">
-            <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-heading); letter-spacing: 0.3px;">
-                @bilginsahiner
-            </span>
+        <!-- İsim, Mavi Tik ve Tarih Alanı -->
+        <div style="display: flex; flex-direction: column; gap: 2px; position: relative;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-heading); letter-spacing: 0.3px;">
+                    @bilginsahiner
+                </span>
+                
+                <!-- Tıklanabilir Mavi Tik Alanı -->
+                <div id="verifiedBadgeWrapper" style="position: relative; display: inline-flex; align-items: center; cursor: pointer;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="#1d9bf0" style="flex-shrink: 0;">
+                        <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.48 0-.94.1-1.348.27C14.825 2.515 13.512 1.5 12 1.5s-2.825 1.015-3.422 2.28c-.406-.17-.866-.27-1.348-.27-2.108 0-3.818 1.78-3.818 3.99 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.48 0 .94-.1 1.348-.27.597 1.265 1.91 2.28 3.422 2.28s2.825-1.015 3.422-2.28c.406.17.866.27 1.348.27 2.108 0 3.818-1.78 3.818-3.99 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6zm-12.72 4.03l-3.23-3.23 1.42-1.42 1.81 1.81 4.99-4.99 1.42 1.42-6.41 6.41z"/>
+                    </svg>
+                    
+                    <!-- Doğrulanmış Hesap Balonu -->
+                    <div id="verifiedTooltip" style="position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(5px); background: #1d9bf0; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 500; white-space: nowrap; opacity: 0; pointer-events: none; transition: all 0.2s ease; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                        Doğrulanmış Hesap
+                        <div style="position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid #1d9bf0;"></div>
+                    </div>
+                </div>
+            </div>
+            
             <span style="font-size: 0.75rem; color: var(--text-main); opacity: 0.6;">
                 27 Haz 2026
             </span>
@@ -584,7 +600,7 @@
 </div>
 
 <script>
-    // Resim Hata Yönetimi (Resim yoksa şık SVG ikonu basar)
+    // 1. Resim Hata Yönetimi (profil.jpg yoksa şık SVG ikonu basar)
     function handleProfileImageError() {
         const container = document.getElementById('profileImageContainer');
         if (container) {
@@ -597,7 +613,36 @@
         }
     }
 
-    // Beğenme Mantığı ve Hafıza Kontrolü
+    // 2. Mavi Tik Tıklama Dinamiği (Balon Kontrolü)
+    const badgeWrapper = document.getElementById('verifiedBadgeWrapper');
+    const tooltipBox = document.getElementById('verifiedTooltip');
+
+    if (badgeWrapper && tooltipBox) {
+        badgeWrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = tooltipBox.style.opacity === '1';
+            
+            if (!isOpen) {
+                tooltipBox.style.opacity = '1';
+                tooltipBox.style.transform = 'translateX(-50%) translateY(0)';
+                
+                setTimeout(() => {
+                    tooltipBox.style.opacity = '0';
+                    tooltipBox.style.transform = 'translateX(-50%) translateY(5px)';
+                }, 2000);
+            } else {
+                tooltipBox.style.opacity = '0';
+                tooltipBox.style.transform = 'translateX(-50%) translateY(5px)';
+            }
+        });
+
+        window.addEventListener('click', () => {
+            tooltipBox.style.opacity = '0';
+            tooltipBox.style.transform = 'translateX(-50%) translateY(5px)';
+        });
+    }
+
+    // 3. Beğenme Mantığı ve Hafıza Kontrolü
     const likeBtn = document.getElementById('likeBtn');
     const likeIcon = document.getElementById('likeIcon');
     const likeCount = document.getElementById('likeCount');
@@ -636,6 +681,7 @@
     });
 </script>
 <!-- GÖNDERİ AKIŞI BİTİŞİ -->
+
 
 <div style="margin: 30px 0; padding: 45px 25px 25px 25px; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); position: relative; text-align: center; overflow: hidden;">
     <span style="position: absolute; top: -10px; left: 10px; font-size: 80px; color: #6246ea; opacity: 0.1; font-family: serif;">“</span>
