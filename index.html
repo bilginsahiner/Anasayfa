@@ -1285,8 +1285,7 @@
 
 <script>
     function handleProfileImageError5() { setupDefaultAvatar('profileImageContainer5'); }
-    function handleProfileImageError6() { setupDefaultAvatar('profileImageContainer6'); }
-    function handleProfileImageError7() { setupDefaultAvatar('profileImageContainer7'); }
+        function handleProfileImageError7() { setupDefaultAvatar('profileImageContainer7'); }
     
     function setupDefaultAvatar(id) {
         const container = document.getElementById(id);
@@ -1316,8 +1315,7 @@
         }
     }
     setupVerifiedBadge('verifiedBadgeWrapper5', 'verifiedTooltip5');
-    setupVerifiedBadge('verifiedBadgeWrapper6', 'verifiedTooltip6');
-    setupVerifiedBadge('verifiedBadgeWrapper7', 'verifiedTooltip7');
+        setupVerifiedBadge('verifiedBadgeWrapper7', 'verifiedTooltip7');
 
     function setupLikeButton(btnId, iconId, countId, baseLikes, storageKey) {
         const btn = document.getElementById(btnId);
@@ -1351,11 +1349,10 @@
         });
     }
     setupLikeButton('likeBtn5', 'likeIcon5', 'likeCount5', 642, 'post_liked_5');
-    setupLikeButton('likeBtn6', 'likeIcon6', 'likeCount6', 418, 'post_liked_6');
-    setupLikeButton('likeBtn7', 'likeIcon7', 'likeCount7', 895, 'post_liked_7');
+        setupLikeButton('likeBtn7', 'likeIcon7', 'likeCount7', 895, 'post_liked_7');
 
     window.addEventListener('click', () => {
-        ['verifiedTooltip5', 'verifiedTooltip6', 'verifiedTooltip7'].forEach(id => {
+        ['verifiedTooltip5', 'verifiedTooltip7'].forEach(id => {
             const t = document.getElementById(id);
             if(t) { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(5px)'; }
         });
