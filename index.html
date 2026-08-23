@@ -870,6 +870,14 @@ function createParticle() {
     // hsl(Renk, Doygunluk, Parlaklık, Opaklık)
     particle.style.background = `hsla(${randomHue}, 90%, 60%, 0.8)`;
     // --------------------------------------------------
+// --- YENİ GEÇİCİ RENK MANTIĞI (Siyah - Mor) ---
+if (startFromLeft) {
+    // Soldan gelen parçacıklar -> Mor
+    particle.style.background = 'rgba(155, 89, 182, 0.9)';
+} else {
+    // Sağdan gelen parçacıklar -> Siyah
+    particle.style.background = 'rgba(20, 20, 20, 0.9)';
+}
 
     particleContainer.appendChild(particle);
 
